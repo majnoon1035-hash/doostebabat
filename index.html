@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>برنامه هفتگی یازدهم ریاضی ب - دبیرستان شهید شهریاری</title>
-    
-    <!-- Google Fonts: Vazirmatn -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Vazirmatn Persian Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     
     <script>
         tailwind.config = {
@@ -24,1133 +19,744 @@
                         sans: ['Vazirmatn', 'sans-serif'],
                     },
                     colors: {
-                        obsidian: '#0a0d14',
-                        cyber: {
-                            cyan: '#00f2fe',
-                            purple: '#9d4edd',
-                            gold: '#fbbf24',
-                            emerald: '#10b981',
-                            rose: '#f43f5e',
-                            blue: '#3b82f6'
-                        }
+                        darkBg: '#0b0f19',
+                        glassBorder: 'rgba(255, 255, 255, 0.12)',
+                        neonCyan: '#00f0ff',
+                        neonPurple: '#a855f7',
+                        neonPink: '#ec4899',
+                        neonEmerald: '#10b981'
                     },
-                    animation: {
-                        'pulse-glow': 'pulseGlow 2s infinite alternate',
-                        'float': 'float 5s ease-in-out infinite',
-                        'shimmer': 'shimmer 3s linear infinite',
-                        'scanline': 'scanline 8s linear infinite',
-                    },
-                    keyframes: {
-                        pulseGlow: {
-                            '0%': { boxShadow: '0 0 15px rgba(0, 242, 254, 0.25)', borderColor: 'rgba(0, 242, 254, 0.5)' },
-                            '100%': { boxShadow: '0 0 35px rgba(157, 78, 221, 0.6)', borderColor: 'rgba(157, 78, 221, 0.9)' }
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-6px)' }
-                        },
-                        shimmer: {
-                            '0%': { backgroundPosition: '-200% 0' },
-                            '100%': { backgroundPosition: '200% 0' }
-                        }
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.35)',
+                        'neon-purple': '0 0 20px rgba(168, 85, 247, 0.35)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
                     }
                 }
             }
         }
     </script>
-    
+
     <style>
         body {
-            background-color: #070a10;
-            color: #f1f5f9;
+            background: radial-gradient(circle at 10% 20%, #0f172a 0%, #080c14 90%);
+            background-attachment: fixed;
             font-family: 'Vazirmatn', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
         }
 
-        /* Ambient Glass Card Effect */
         .glass-panel {
-            background: rgba(15, 22, 36, 0.65);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(18, 26, 43, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
         }
 
-        .glass-panel-interactive {
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .glass-card {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .glass-panel-interactive:hover {
+
+        .glass-card:hover {
             transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 20px 40px -10px rgba(0, 242, 254, 0.2);
-            border-color: rgba(0, 242, 254, 0.4);
+            background: rgba(30, 41, 59, 0.75);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 12px 25px -5px rgba(0, 240, 255, 0.15);
         }
 
-        /* Active Period Highlight Styling */
-        .active-period-card {
-            animation: pulseGlow 2s infinite alternate;
-            background: rgba(16, 185, 129, 0.12) !important;
-            border-color: rgba(16, 185, 129, 0.8) !important;
+        .glass-modal {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* Text Shimmer Effect */
-        .shimmer-text {
-            background: linear-gradient(90deg, #00f2fe 0%, #9d4edd 33%, #fbbf24 66%, #00f2fe 100%);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: shimmer 6s linear infinite;
+        /* Animated Glowing Pulse for current class */
+        @keyframes activePulse {
+            0%, 100% { border-color: rgba(0, 240, 255, 0.8); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+            50% { border-color: rgba(168, 85, 247, 0.8); box-shadow: 0 0 25px rgba(168, 85, 247, 0.6); }
+        }
+
+        .is-active-period {
+            animation: activePulse 3s infinite ease-in-out;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #070a10;
+            background: #0b0f19;
         }
         ::-webkit-scrollbar-thumb {
             background: #1e293b;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #00f2fe;
-        }
-
-        /* Background Particle Canvas */
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Modal Blur Filter */
-        .modal-backdrop {
-            background: rgba(4, 7, 15, 0.85);
-            backdrop-filter: blur(12px);
-        }
-
-        /* Printable Stylesheet */
-        @media print {
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            #bgCanvas, .no-print {
-                display: none !important;
-            }
-            .glass-panel {
-                background: white !important;
-                color: black !important;
-                border: 1px solid #ccc !important;
-                box-shadow: none !important;
-            }
-            .text-white, .text-slate-100, .text-slate-200, .text-slate-300, .text-slate-400 {
-                color: #111 !important;
-            }
-            .border-slate-800, .border-slate-700 {
-                border-color: #ddd !important;
-            }
+            background: #334155;
         }
     </style>
 </head>
-<body class="p-3 md:p-6 lg:p-8">
+<body class="text-slate-100 min-h-screen pb-12 selection:bg-cyan-500 selection:text-black">
 
-    <!-- Background Canvas Particles -->
-    <canvas id="bgCanvas"></canvas>
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px]"></div>
+    </div>
 
-    <div class="max-w-7xl mx-auto space-y-6 relative z-10">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
 
-        <!-- Top Navigation & School Header -->
-        <header class="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden border border-slate-800/80">
-            <!-- Glow background spheres -->
-            <div class="absolute -top-24 -left-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
-                
-                <!-- School & Grade Badge & Title -->
-                <div class="flex items-center gap-5 text-center md:text-right flex-col md:flex-row">
-                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-amber-400 p-[2px] shadow-lg shadow-cyan-500/20 flex-shrink-0 animate-float">
-                        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                            <i class="fa-solid fa-atom text-3xl text-cyan-400"></i>
-                        </div>
+        <header class="glass-panel rounded-3xl p-6 mb-8 shadow-2xl relative overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- School Info -->
+                <div class="flex items-center gap-4 text-center md:text-right">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-3xl shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div>
-                        <div class="flex items-center justify-center md:justify-start gap-2 mb-2 flex-wrap">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-                                <i class="fa-solid fa-school text-[10px] ml-1"></i> دبیرستان شهید شهریاری
-                            </span>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-300 border border-purple-500/30">
-                                پایه یازدهم - رشته ریاضی فیزیک (کلاس ب)
-                            </span>
+                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                            <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">سال تحصیلی ۱۴۰۳-۱۴۰۴</span>
+                            <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">پایه یازدهم ریاضی ب</span>
                         </div>
-                        <h1 class="text-2xl md:text-4xl font-black shimmer-text leading-tight tracking-tight">
-                            برنامه هفتگی و سامانه هوشمند کلاس
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-300">
+                            دبیرستان شهید شهریاری
                         </h1>
-                        <p class="text-slate-400 text-xs md:text-sm mt-1">
-                            پایش زنده کلاس‌ها، زمان‌بندی زنگ‌ها، بودجه‌بندی اساتید و راهنمای دروس
-                        </p>
+                        <p class="text-xs text-slate-400 mt-1">سامانه هوشمند برنامه هفتگی، سرفصل‌ها و جزوات دروس</p>
                     </div>
                 </div>
 
-                <!-- Live Clock & Active Class Tracker Widget -->
-                <div class="glass-panel rounded-2xl p-4 w-full lg:w-auto min-w-[320px] border border-cyan-500/30 bg-slate-950/80">
-                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="relative flex h-3 w-3">
-                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                              <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                            </span>
-                            <span class="text-xs text-slate-300 font-bold" id="currentDayPersian">در حال دریافت...</span>
+                <!-- Clock & Status Widget -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                    <!-- Clock -->
+                    <div class="glass-card px-5 py-3 rounded-2xl text-center min-w-[160px] w-full sm:w-auto">
+                        <div class="text-xs text-slate-400 flex items-center justify-center gap-1.5 mb-1">
+                            <i class="fa-regular fa-clock text-cyan-400"></i>
+                            <span>زمان کنونی</span>
                         </div>
-                        <div class="text-xs text-cyan-400 font-bold bg-cyan-950/80 px-2.5 py-1 rounded-lg border border-cyan-800/50 font-mono" id="currentShamsiDate">
-                            -- / -- / ----
-                        </div>
+                        <div id="liveClock" class="text-2xl font-bold font-mono text-cyan-300 tracking-wider">00:00:00</div>
+                        <div id="liveDate" class="text-[11px] text-slate-400 mt-0.5">در حال دریافت...</div>
                     </div>
 
-                    <div class="flex items-center justify-between gap-4">
+                    <!-- Active Session Indicator -->
+                    <div class="glass-card px-5 py-3 rounded-2xl flex items-center gap-3 w-full sm:w-auto border-cyan-500/30">
+                        <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
                         <div>
-                            <div class="text-[11px] text-slate-400">ساعت رسمی ایران</div>
-                            <div class="text-2xl md:text-3xl font-black text-white tracking-widest font-mono text-cyan-300" id="liveTimeClock">
-                                00:00:00
-                            </div>
+                            <div class="text-xs text-slate-400">وضعیت زنگ درسی</div>
+                            <div id="activeStatusText" class="text-sm font-bold text-emerald-400">زنگ فعال مشخص نیست</div>
                         </div>
-
-                        <div class="text-left border-r border-slate-800/80 pr-4">
-                            <div class="text-[11px] text-slate-400">وضعیت کنونی:</div>
-                            <div class="text-xs font-bold text-emerald-400 mt-0.5" id="activeStatusBadge">
-                                در حال محاسبه...
-                            </div>
-                            <div class="text-[10px] text-slate-400 mt-1" id="activeTimerCountdown">
-                                --
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Live Progress Bar -->
-                    <div class="w-full bg-slate-800 rounded-full h-1.5 mt-3 overflow-hidden">
-                        <div id="liveProgressBar" class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
-
             </div>
         </header>
 
-        <!-- Morning Schedule Timeline Overview -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            <!-- Morning Start Routine -->
-            <div class="glass-panel rounded-2xl p-4 flex items-center gap-4 border-r-4 border-r-amber-500">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl border border-amber-500/20 flex-shrink-0">
-                    <i class="fa-solid fa-sun-plant-wilt"></i>
-                </div>
-                <div class="flex-grow">
-                    <div class="text-xs text-amber-400 font-bold mb-1">🌅 برنامه آغاز روز</div>
-                    <div class="text-xs text-slate-300 space-y-1">
-                        <div class="flex justify-between">
-                            <span>👥 حضور و صبحگاه:</span>
-                            <span class="font-mono text-amber-300 font-bold">07:00 تا 07:15</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>📝 آزمون صبحگاهی:</span>
-                            <span class="font-mono text-amber-300 font-bold">07:15 تا 07:50</span>
-                        </div>
-                    </div>
-                </div>
+        <section class="glass-panel rounded-2xl p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Day Filters -->
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="dayFilterTabs">
+                <button onclick="filterDay('all')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20 active-tab" data-day="all">
+                    <i class="fa-solid fa-calendar-days ml-1.5"></i> همه روزها
+                </button>
+                <button onclick="filterDay('شنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="شنبه">شنبه</button>
+                <button onclick="filterDay('یکشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="یکشنبه">یکشنبه</button>
+                <button onclick="filterDay('دوشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="دوشنبه">دوشنبه</button>
+                <button onclick="filterDay('سه‌شنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="سه‌شنبه">سه‌شنبه</button>
+                <button onclick="filterDay('چهارشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="چهارشنبه">چهارشنبه</button>
             </div>
 
-            <!-- Bells Overview -->
-            <div class="glass-panel rounded-2xl p-4 flex items-center justify-between border-r-4 border-r-cyan-500">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl border border-cyan-500/20 flex-shrink-0">
-                        <i class="fa-solid fa-bell"></i>
+            <!-- Search Bar -->
+            <div class="relative w-full md:w-72">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="جستجوی درس، استاد یا زنگ..." 
+                       class="w-full bg-slate-900/80 border border-slate-700/80 focus:border-cyan-400 focus:outline-none rounded-xl pr-9 pl-4 py-2 text-sm text-slate-200 placeholder-slate-500 transition-all">
+            </div>
+        </section>
+
+        <main>
+            <div id="scheduleGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Class cards will be dynamically injected via JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <div id="courseModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div id="modalContainer" class="glass-modal w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl transform scale-95 transition-all duration-300 max-h-[90vh] overflow-y-auto">
+            
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between pb-4 border-b border-slate-700/60 mb-6">
+                <div class="flex items-center gap-4">
+                    <div id="modalIconBox" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg">
+                        <i id="modalIcon" class="fa-solid fa-book"></i>
                     </div>
                     <div>
-                        <div class="text-xs text-cyan-400 font-bold">🚀 شروع رسمی کلاس‌ها</div>
-                        <div class="text-xs text-slate-300 mt-0.5">
-                            ساعت <span class="font-mono text-cyan-300 font-bold">08:00</span> صبح (۴ زنگ آموزشی)
+                        <div class="flex items-center gap-2 mb-1">
+                            <span id="modalTeacher" class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">استاد محمدی</span>
+                            <span id="modalSessionsCount" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">۲ زنگ در هفته</span>
                         </div>
+                        <h2 id="modalTitle" class="text-2xl font-bold text-white">فیزیک ۲</h2>
                     </div>
                 </div>
-                <button onclick="scrollToCurrentPeriod()" class="px-3 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs rounded-xl font-bold border border-cyan-500/40 transition-all flex items-center gap-1.5 no-print">
-                    <i class="fa-solid fa-location-arrow"></i>
-                    <span>زنگ جاری</span>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <!-- Lunch & Prayer Break -->
-            <div class="glass-panel rounded-2xl p-4 flex items-center gap-4 border-r-4 border-r-purple-500">
-                <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl border border-purple-500/20 flex-shrink-0">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <div class="flex-grow">
-                    <div class="text-xs text-purple-400 font-bold mb-1">🍽️ استراحت، ناهار و نماز</div>
-                    <div class="flex justify-between text-xs text-slate-300 mt-1">
-                        <span>زمان استراحت بین زنگ ۳ و ۴:</span>
-                        <span class="font-mono text-purple-300 font-bold">12:40 تا 13:40</span>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- Interactive Controls Bar -->
-        <section class="glass-panel rounded-2xl p-4 space-y-4 no-print">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+            <!-- Modal Content Sections -->
+            <div class="space-y-6 text-sm text-slate-300">
                 
-                <!-- View Mode Selector -->
-                <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
-                    <button id="viewGridBtn" onclick="switchViewMode('grid')" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-lg">
-                        <i class="fa-solid fa-table-cells"></i>
-                        <span>جدول کل هفته</span>
-                    </button>
-                    <button id="viewDayBtn" onclick="switchViewMode('day')" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-calendar-day"></i>
-                        <span>نمای تک‌روز</span>
-                    </button>
-                </div>
-
-                <!-- Day Filter Tabs -->
-                <div class="flex flex-wrap items-center gap-1.5 w-full lg:w-auto justify-center" id="dayFilterTabsContainer">
-                    <button onclick="setDayFilter('all')" data-day="all" class="day-filter-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-cyan-500 text-slate-950">
-                        همه روزها
-                    </button>
-                    <button onclick="setDayFilter('0')" data-day="0" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        شنبه
-                    </button>
-                    <button onclick="setDayFilter('1')" data-day="1" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        یکشنبه
-                    </button>
-                    <button onclick="setDayFilter('2')" data-day="2" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        دوشنبه
-                    </button>
-                    <button onclick="setDayFilter('3')" data-day="3" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        سه‌شنبه
-                    </button>
-                    <button onclick="setDayFilter('4')" data-day="4" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        چهارشنبه
-                    </button>
-                    <button onclick="setDayFilter('5')" data-day="5" class="day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
-                        پنج‌شنبه
-                    </button>
-                </div>
-
-                <!-- Search and Actions -->
-                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                    <!-- Search Input -->
-                    <div class="relative flex-grow sm:flex-grow-0">
-                        <input type="text" id="searchInput" oninput="handleSearch()" placeholder="جستجوی درس یا استاد..." class="w-full sm:w-48 bg-slate-900/90 border border-slate-800 text-xs text-slate-200 rounded-xl px-3 py-2 pr-8 focus:outline-none focus:border-cyan-500 transition-all placeholder:text-slate-500">
-                        <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-xs text-slate-500"></i>
+                <!-- Weekly Time Schedule -->
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+                    <h3 class="text-xs font-semibold text-slate-400 mb-2.5 flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-cyan-400"></i> زمان برگزاری در هفته
+                    </h3>
+                    <div id="modalScheduleList" class="flex flex-wrap gap-2">
+                        <!-- Dynamic Sessions -->
                     </div>
-
-                    <!-- Teachers Modal Trigger -->
-                    <button onclick="openTeachersModal()" class="px-3 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 text-xs rounded-xl font-bold border border-purple-500/40 transition-all flex items-center gap-1.5" title="لیست اساتید">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                        <span class="hidden sm:inline">اساتید</span>
-                    </button>
-
-                    <!-- Copy Text Button -->
-                    <button onclick="copyFullScheduleText()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-bold border border-slate-700 transition-all flex items-center gap-1.5" title="کپی متن برنامه">
-                        <i class="fa-solid fa-copy"></i>
-                    </button>
-
-                    <!-- Print Button -->
-                    <button onclick="window.print()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-bold border border-slate-700 transition-all flex items-center gap-1.5" title="چاپ / ذخیره PDF">
-                        <i class="fa-solid fa-print"></i>
-                    </button>
                 </div>
 
-            </div>
-        </section>
+                <!-- Exam Topics & Syllabus -->
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+                    <h3 class="text-xs font-semibold text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-purple-400"></i> سرفصل‌ها و مباحث مهم آزمون
+                    </h3>
+                    <ul id="modalSyllabus" class="space-y-2 list-disc list-inside text-slate-300 font-light">
+                        <!-- Dynamic Syllabus items -->
+                    </ul>
+                </div>
 
-        <!-- Main Grid Container -->
-        <main id="scheduleGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-            <!-- Dynamic Schedule Columns Generated by JS -->
-        </main>
-
-        <!-- Teachers Directory Modal -->
-        <div id="teachersModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-            <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 space-y-6 border border-purple-500/30 max-h-[85vh] overflow-y-auto">
-                <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-users-rectangle"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-base font-extrabold text-white">کادر اساتید یازدهم ریاضی ب</h3>
-                            <p class="text-xs text-slate-400">لیست کامل اساتید، دروس و روزهای تدریس</p>
-                        </div>
+                <!-- Handouts & Downloads -->
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+                    <h3 class="text-xs font-semibold text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down text-emerald-400"></i> جزوات، فرمول‌نامه‌ها و تکالیف
+                    </h3>
+                    <div id="modalHandouts" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Dynamic Download Buttons -->
                     </div>
-                    <button onclick="closeTeachersModal()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="teachersListGrid">
-                    <!-- Dynamic Teachers Cards -->
+                <!-- Personal Student Note Section -->
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xs font-semibold text-slate-400 flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square text-amber-400"></i> یادداشت شخصی شما برای این درس
+                        </h3>
+                        <span id="saveStatus" class="text-[11px] text-emerald-400 opacity-0 transition-opacity">ذخیره شد!</span>
+                    </div>
+                    <textarea id="modalNoteInput" rows="3" placeholder="یادداشت‌ها، تمرین‌های باقی‌مانده یا تاریخ امتحان این درس را اینجا بنویسید..."
+                              class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition-all resize-none"></textarea>
+                    <div class="mt-2 text-left">
+                        <button onclick="savePersonalNote()" class="px-4 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-medium transition-all flex items-center gap-1.5 ml-auto">
+                            <i class="fa-solid fa-floppy-disk"></i> ذخیره یادداشت
+                        </button>
+                    </div>
                 </div>
+
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="glass-panel rounded-2xl p-4 text-center text-xs text-slate-400 border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div>
-                <span>🏫 دبیرستان هیأت امنایی شهید شهریاری</span>
-                <span class="mx-2 text-slate-600">•</span>
-                <span>کلاس یازدهم ریاضی (کلاس ب)</span>
-            </div>
-            <div class="text-slate-500 text-[11px]">
-                سیستم آنلاین مدیریت برنامه درس و زمان‌بندی هوشمند
-            </div>
-        </footer>
-
     </div>
 
     <script>
-        
-        // Time Slot Definitions
-        const TIME_SLOTS = [
-            { id: 1, title: 'زنگ اول', time: '08:00 تا 09:20', start: '08:00', end: '09:20' },
-            { id: 2, title: 'زنگ دوم', time: '09:40 تا 11:00', start: '09:40', end: '11:00' },
-            { id: 3, title: 'زنگ سوم', time: '11:20 تا 12:40', start: '11:20', end: '12:40' },
-            { id: 4, title: 'زنگ چهارم', time: '13:40 تا 15:00', start: '13:40', end: '15:00' }
+        // Database of Subjects and Detailed Info
+        const scheduleData = [
+            // شنبه
+            {
+                id: 'calculus-1',
+                day: 'شنبه',
+                period: 1,
+                time: '۰۷:۳۰ - ۰۹:۰۰',
+                title: 'حسابان ۱',
+                teacher: 'استاد حامدرضا حیدری',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-calculator',
+                color: 'from-violet-600 to-indigo-600',
+                syllabus: [
+                    'فصل ۱: مجموعه‌ها، الگو و دنباله (حسابی و هندسی)',
+                    'فصل ۲: توابع و ویژگی‌های آن (دامنه، برد، توابع زوج و فرد)',
+                    'فصل ۳: حد و پیوستگی توابع (حد چپ و راست، رفع ابهام صفر صفرم)',
+                    'تمرین‌های کلاسی و حل مسائل امتحانی سری دوم'
+                ],
+                handouts: [
+                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
+                    { title: 'فرم‌های نمونه‌سوالات امتحانی ترم اول', type: 'doc', icon: 'fa-file-lines', color: 'text-blue-400' }
+                ]
+            },
+            {
+                id: 'physics-2',
+                day: 'شنبه',
+                period: 2,
+                time: '۰۹:۱۵ - ۱۰:۴۵',
+                title: 'فیزیک ۲',
+                teacher: 'استاد محمدی',
+                room: 'آزمایشگاه فیزیک / ۱۰۲',
+                icon: 'fa-bolt',
+                color: 'from-cyan-500 to-blue-600',
+                syllabus: [
+                    'فصل ۱: الکتریسیته ساکن (قانون کولن، میدان الکتریکی، پتانسیل و ولتاژ)',
+                    'فصل ۲: جریان الکتریکی و مدارهای مستقیم (قانون اوم، مقاومت ویژه، قانون کیرشُف)',
+                    'فصل ۳: مغناطیس و القای الکترومغناطیسی (نیروی لورنتس، قانون فارادی و لنز)',
+                    'فرمول‌های کلیدی فصل ۱ و ۲ و روش‌های حل سریع کنکوری'
+                ],
+                handouts: [
+                    { title: 'فرمول‌نامه کامل فیزیک ۲ (اختصاصی)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
+                    { title: 'جزوه مسائل حل‌شده الکتریسیته ساکن', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
+                    { title: 'تکلیف سری سوم: تحلیل مدارهای چندحلقه‌ای', type: 'task', icon: 'fa-list-check', color: 'text-emerald-400' }
+                ]
+            },
+            {
+                id: 'chemistry-2',
+                day: 'شنبه',
+                period: 3,
+                time: '۱۱:۰۰ - ۱۲:۳۰',
+                title: 'شیمی ۲',
+                teacher: 'استاد باقری',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-flask',
+                color: 'from-emerald-500 to-teal-600',
+                syllabus: [
+                    'فصل ۱: قدر هدایای زمینی را بدانیم (جدول تناوبی و ترکیبات آلی)',
+                    'فصل ۲: در غذایی که می‌خوریم چیست؟ (ترمودینامیک، آنتالپی و قانون هس)',
+                    'حل مسائل استوکیومتری و واکنش‌های ترموشیمیایی'
+                ],
+                handouts: [
+                    { title: 'جدول نکات آرایش الکترونی و جدول تناوبی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
+                    { title: 'تمرین‌های استوکیومتری ترمودینامیکی', type: 'doc', icon: 'fa-file-word', color: 'text-blue-400' }
+                ]
+            },
+            {
+                id: 'english-2',
+                day: 'شنبه',
+                period: 4,
+                time: '۱۲:۴۵ - ۱۴:۰۰',
+                title: 'زبان انگلیسی ۲',
+                teacher: 'استاد احمدی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-language',
+                color: 'from-amber-500 to-orange-600',
+                syllabus: [
+                    'Vision 2 - Lesson 1: Asian Cheetah & Endangered Animals',
+                    'Grammar: Passive Voice (افعال مجهول) & Modals',
+                    'Vocabulary & Reading Comprehension Strategies'
+                ],
+                handouts: [
+                    { title: 'واژه‌نامه کامل دروس ۱ و ۲ به همراه مثال', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+
+            // یکشنبه
+            {
+                id: 'geometry-2',
+                day: 'یکشنبه',
+                period: 1,
+                time: '۰۷:۳۰ - ۰۹:۰۰',
+                title: 'هندسه ۲',
+                teacher: 'استاد رضایی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-shapes',
+                color: 'from-pink-500 to-rose-600',
+                syllabus: [
+                    'فصل ۱: دایره (زاویه‌ها در دایره، روابط طولی، مماس)',
+                    'فصل ۲: تبدیل‌های هندسی (انتقال، دوران، بازتاب، تجانس)',
+                    'قضایا و اثبات‌های مهم امتحانی'
+                ],
+                handouts: [
+                    { title: 'جزوه اثبات قضایای هندسه ۲', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'statistics',
+                day: 'یکشنبه',
+                period: 2,
+                time: '۰۹:۱۵ - ۱۰:۴۵',
+                title: 'آمار و احتمال',
+                teacher: 'استاد کریمی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-chart-pie',
+                color: 'from-indigo-500 to-purple-600',
+                syllabus: [
+                    'فصل ۱: منطق ریاضی و نظریه مجموعه‌ها',
+                    'فصل ۲: احتمال شرطی و استقلال پیشامدها',
+                    'قانون احتمال کل و قضیه بیز'
+                ],
+                handouts: [
+                    { title: 'خلاصه نکات فرمول‌های احتمال شرطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'persian-lit',
+                day: 'یکشنبه',
+                period: 3,
+                time: '۱۱:۰۰ - ۱۲:۳۰',
+                title: 'ادبیات فارسی ۲',
+                teacher: 'استاد حسینی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-book-open',
+                color: 'from-red-500 to-pink-600',
+                syllabus: [
+                    'معنی ابیات و آرایه‌های ادبی ستایش تا درس پنجم',
+                    'قواعد دستور زبان: نقش‌های دستوری و گروه اسمی',
+                    'تاریخ ادبیات و اعلام پایان کتاب'
+                ],
+                handouts: [
+                    { title: 'جزوه معنی و آرایه‌های فارسی یازدهم', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+
+            // دوشنبه
+            {
+                id: 'physics-2',
+                day: 'دوشنبه',
+                period: 1,
+                time: '۰۷:۳۰ - ۰۹:۰۰',
+                title: 'فیزیک ۲',
+                teacher: 'استاد محمدی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-bolt',
+                color: 'from-cyan-500 to-blue-600',
+                syllabus: [
+                    'فصل ۲: بررسی دقیق مدارهای جریان مستقیم و افت پتانسیل',
+                    'حل مسائل پیشرفته قانون کیرشُف و توان مصرفی مقاومت‌ها'
+                ],
+                handouts: [
+                    { title: 'فرمول‌نامه کامل فیزیک ۲ (اختصاصی)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'calculus-1',
+                day: 'دوشنبه',
+                period: 2,
+                time: '۰۹:۱۵ - ۱۰:۴۵',
+                title: 'حسابان ۱',
+                teacher: 'استاد حامدرضا حیدری',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-calculator',
+                color: 'from-violet-600 to-indigo-600',
+                syllabus: [
+                    'فصل ۳: محاسبه حد توابع مثلثاتی و رفع ابهام',
+                    'بررسی پیوستگی روی بازه‌ها و نقاط ناپیوستگی'
+                ],
+                handouts: [
+                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'geology',
+                day: 'دوشنبه',
+                period: 3,
+                time: '۱۱:۰۰ - ۱۲:۳۰',
+                title: 'زمین‌شناسی',
+                teacher: 'استاد قاسمیان',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-mountain',
+                color: 'from-amber-600 to-yellow-600',
+                syllabus: [
+                    'فصل ۱: آفرینش کیهان و سنگ‌ها',
+                    'فصل ۲: منابع معدنی و زیرزمینی ایران'
+                ],
+                handouts: [
+                    { title: 'خلاصه کنکوری نکات زمین‌شناسی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+
+            // سه‌شنبه
+            {
+                id: 'chemistry-2',
+                day: 'سه‌شنبه',
+                period: 1,
+                time: '۰۷:۳۰ - ۰۹:۰۰',
+                title: 'شیمی ۲',
+                teacher: 'استاد باقری',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-flask',
+                color: 'from-emerald-500 to-teal-600',
+                syllabus: [
+                    'فصل ۲: آنتالپی پیوند و محاسبه گرمای واکنش',
+                    'تمرین‌های جامع سینتیک و سرعت واکنش‌های شیمیایی'
+                ],
+                handouts: [
+                    { title: 'تمرین‌های استوکیومتری ترمودینامیکی', type: 'doc', icon: 'fa-file-word', color: 'text-blue-400' }
+                ]
+            },
+            {
+                id: 'geometry-2',
+                day: 'سه‌شنبه',
+                period: 2,
+                time: '۰۹:۱۵ - ۱۰:۴۵',
+                title: 'هندسه ۲',
+                teacher: 'استاد رضایی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-shapes',
+                color: 'from-pink-500 to-rose-600',
+                syllabus: [
+                    'فصل ۳: مقاطع مخروطی (بیضی، دایره و سهمی)',
+                    'رسم مقاطع و ویژگی‌های کانون بیضی'
+                ],
+                handouts: [
+                    { title: 'جزوه فرمول‌های مقاطع مخروطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'env-lab',
+                day: 'سه‌شنبه',
+                period: 3,
+                time: '۱۱:۰۰ - ۱۲:۳۰',
+                title: 'انسان و محیط زیست / آزمایشگاه',
+                teacher: 'استاد صادقی',
+                room: 'آزمایشگاه مرکزی',
+                icon: 'fa-leaf',
+                color: 'from-teal-500 to-emerald-600',
+                syllabus: [
+                    'بحران آب، خاک و هوا در ایران',
+                    'انجام آزمایش‌های تجربی فیزیک و شیمی'
+                ],
+                handouts: [
+                    { title: 'دستورکار آزمایش‌های کلاسی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+
+            // چهارشنبه
+            {
+                id: 'calculus-1',
+                day: 'چهارشنبه',
+                period: 1,
+                time: '۰۷:۳۰ - ۰۹:۰۰',
+                title: 'حسابان ۱',
+                teacher: 'استاد حامدرضا حیدری',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-calculator',
+                color: 'from-violet-600 to-indigo-600',
+                syllabus: [
+                    'مفهوم مشتق، شیب خط مماس و مشتق‌پذیری',
+                    'قواعد مشتق‌گیری توابع چندجمله‌ای و کسری'
+                ],
+                handouts: [
+                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            },
+            {
+                id: 'statistics',
+                day: 'چهارشنبه',
+                period: 2,
+                time: '۰۹:۱۵ - ۱۰:۴۵',
+                title: 'آمار و احتمال',
+                teacher: 'استاد کریمی',
+                room: 'کلاس ۱۰۲',
+                icon: 'fa-chart-pie',
+                color: 'from-indigo-500 to-purple-600',
+                syllabus: [
+                    'متغیرهای تصادفی و توزیع احتمال دوجمله‌ای',
+                    'حل نمونه سوالات امتحانی ترم اول'
+                ],
+                handouts: [
+                    { title: 'خلاصه نکات فرمول‌های احتمال شرطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
+                ]
+            }
         ];
 
-        // Days Definition (Mapping to JS getDay(): 6=Sat, 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu)
-        const WEEK_DAYS = [
-            { id: 0, name: 'شنبه', color: 'border-emerald-500/40', accent: '#10b981', jsDayIndex: 6 },
-            { id: 1, name: 'یکشنبه', color: 'border-blue-500/40', accent: '#3b82f6', jsDayIndex: 0 },
-            { id: 2, name: 'دوشنبه', color: 'border-purple-500/40', accent: '#9d4edd', jsDayIndex: 1 },
-            { id: 3, name: 'سه‌شنبه', color: 'border-amber-500/40', accent: '#fbbf24', jsDayIndex: 2 },
-            { id: 4, name: 'چهارشنبه', color: 'border-cyan-500/40', accent: '#00f2fe', jsDayIndex: 3 },
-            { id: 5, name: 'پنج‌شنبه', color: 'border-rose-500/40', accent: '#f43f5e', jsDayIndex: 4 }
-        ];
-
-        // Embedded Complete Schedule Database
-        const SCHEDULE_DATA = {
-            0: [ // شنبه
-                {
-                    period: 1,
-                    subject: 'عربی ۲',
-                    teacher: 'استاد نصیری',
-                    icon: 'fa-book-quran',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                },
-                {
-                    period: 2,
-                    isSplit: true,
-                    parts: [
-                        { time: '09:40 تا 10:20', subject: 'عربی ۲', teacher: 'استاد نصیری', icon: 'fa-book-quran' },
-                        { time: '10:20 تا 11:00', subject: 'قرآن', teacher: 'استاد شوشتری', icon: 'fa-kaaba' }
-                    ],
-                    badge: 'دو بخشی',
-                    badgeStyle: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                },
-                {
-                    period: 3,
-                    subject: 'شیمی ۲',
-                    teacher: 'استاد باقری',
-                    icon: 'fa-flask',
-                    badge: 'تخصصی',
-                    badgeStyle: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                },
-                {
-                    period: 4,
-                    subject: 'انسان و محیط‌زیست',
-                    teacher: 'استاد رضایی',
-                    icon: 'fa-leaf',
-                    badge: 'پایه',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                }
-            ],
-            1: [ // یکشنبه
-                {
-                    period: 1,
-                    subject: 'فیزیک ۲',
-                    teacher: 'استاد محمدی',
-                    icon: 'fa-atom',
-                    badge: 'تخصصی',
-                    badgeStyle: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30'
-                },
-                {
-                    period: 2,
-                    subject: 'حسابان ۱',
-                    teacher: 'استاد حامدرضا حیدری',
-                    icon: 'fa-square-root-variable',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 3,
-                    subject: 'هندسه ۲',
-                    teacher: 'استاد امام',
-                    icon: 'fa-shapes',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 4,
-                    subject: 'تست حسابان ۱',
-                    teacher: 'استاد حامدرضا حیدری',
-                    icon: 'fa-pen-ruler',
-                    badge: '🎯 تست',
-                    badgeStyle: 'bg-rose-500/20 text-rose-300 border-rose-500/30'
-                }
-            ],
-            2: [ // دوشنبه
-                {
-                    period: 1,
-                    subject: 'دین و زندگی ۲',
-                    teacher: 'استاد فاضل‌نیا',
-                    icon: 'fa-book-bookmark',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                },
-                {
-                    period: 2,
-                    subject: 'زبان انگلیسی ۲',
-                    teacher: 'استاد یداله حیدری',
-                    icon: 'fa-language',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                },
-                {
-                    period: 3,
-                    subject: 'شیمی ۲',
-                    teacher: 'استاد باقری',
-                    icon: 'fa-flask-vial',
-                    badge: 'تخصصی',
-                    badgeStyle: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                },
-                {
-                    period: 4,
-                    isSplit: true,
-                    parts: [
-                        { time: '13:40 تا 14:20', subject: 'زبان انگلیسی ۲', teacher: 'استاد یداله حیدری', icon: 'fa-language' },
-                        { time: '14:20 تا 15:00', subject: 'زمین‌شناسی (ایمنی)', teacher: 'استاد مربوطه', icon: 'fa-earth-americas' }
-                    ],
-                    badge: 'دو بخشی',
-                    badgeStyle: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                }
-            ],
-            3: [ // سه‌شنبه
-                {
-                    period: 1,
-                    subject: 'حسابان ۱',
-                    teacher: 'استاد حامدرضا حیدری',
-                    icon: 'fa-calculator',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 2,
-                    subject: 'فارسی و نگارش ۲',
-                    teacher: 'استاد آورزمان',
-                    icon: 'fa-feather-pointed',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                },
-                {
-                    period: 3,
-                    subject: 'هندسه ۲',
-                    teacher: 'استاد امام',
-                    icon: 'fa-draw-polygon',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 4,
-                    subject: 'تاریخ معاصر',
-                    teacher: 'استاد حامد صفرخانیان',
-                    icon: 'fa-scroll',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                }
-            ],
-            4: [ // چهارشنبه
-                {
-                    period: 1,
-                    subject: 'فیزیک ۲',
-                    teacher: 'استاد محمدی',
-                    icon: 'fa-atom',
-                    badge: 'تخصصی',
-                    badgeStyle: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30'
-                },
-                {
-                    period: 2,
-                    subject: 'حسابان ۱',
-                    teacher: 'استاد حامدرضا حیدری',
-                    icon: 'fa-square-root-variable',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 3,
-                    subject: 'تست فیزیک ۲',
-                    teacher: 'استاد محمدی',
-                    icon: 'fa-bolt',
-                    badge: '🎯 تست',
-                    badgeStyle: 'bg-rose-500/20 text-rose-300 border-rose-500/30'
-                },
-                {
-                    period: 4,
-                    subject: 'تربیت بدنی ۲',
-                    teacher: 'استاد هاشمی',
-                    icon: 'fa-person-running',
-                    badge: 'عمومی',
-                    badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                }
-            ],
-            5: [ // پنج‌شنبه
-                {
-                    period: 1,
-                    subject: 'آمار و احتمال',
-                    teacher: 'استاد جعفری',
-                    icon: 'fa-chart-pie',
-                    badge: 'پایه ریاضی',
-                    badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                },
-                {
-                    period: 2,
-                    subject: 'تست شیمی ۲',
-                    teacher: 'استاد باقری',
-                    icon: 'fa-vial-circle-check',
-                    badge: '🎯 تست',
-                    badgeStyle: 'bg-rose-500/20 text-rose-300 border-rose-500/30'
-                },
-                {
-                    period: 3,
-                    isSplit: true,
-                    parts: [
-                        { time: '11:20 تا 12:00', subject: 'آمار و احتمال', teacher: 'استاد جعفری', icon: 'fa-chart-pie' },
-                        { time: '12:00 تا 12:40', subject: 'فارسی ۲', teacher: 'استاد آورزمان', icon: 'fa-feather' }
-                    ],
-                    badge: 'دو بخشی',
-                    badgeStyle: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                },
-                {
-                    period: 4,
-                    isOff: true,
-                    subject: 'بدون کلاس (پایان هفته)',
-                    teacher: '-',
-                    icon: 'fa-mug-hot',
-                    badge: 'تعطیل',
-                    badgeStyle: 'bg-slate-800 text-slate-400 border-slate-700'
-                }
-            ]
-        };
-
-        // Application State
-        let currentDayFilter = 'all'; // 'all' or day ID ('0'..'5')
-        let searchQuery = '';
-        let viewMode = 'grid'; // 'grid' | 'day'
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initLiveClock();
-            renderScheduleGrid();
-            renderTeachersModalData();
-            initAmbientCanvas();
-        });
-
-        // Real-Time Clock & Class Period Countdown Logic
-        function initLiveClock() {
-            updateClockTick();
-            setInterval(updateClockTick, 1000);
-        }
-
-        function updateClockTick() {
-            const now = new Date();
-
-            // Format standard Iran/Local time
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('liveTimeClock').innerText = `${h}:${m}:${s}`;
-
-            // Persian Date
-            try {
-                const dayFormatter = new Intl.DateTimeFormat('fa-IR', { weekday: 'long' });
-                const dateFormatter = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
-                document.getElementById('currentDayPersian').innerText = dayFormatter.format(now);
-                document.getElementById('currentShamsiDate').innerText = dateFormatter.format(now);
-            } catch(e) {
-                document.getElementById('currentDayPersian').innerText = 'روز جاری';
-            }
-
-            // Calculate active status & progress bar
-            updateActiveStatusAndProgressBar(now);
-        }
-
-        function updateActiveStatusAndProgressBar(now) {
-            const jsDay = now.getDay(); // 0: Sun, ... 6: Sat
-            const dayObj = WEEK_DAYS.find(d => d.jsDayIndex === jsDay);
-
-            const statusBadge = document.getElementById('activeStatusBadge');
-            const countdownEl = document.getElementById('activeTimerCountdown');
-            const progressBar = document.getElementById('liveProgressBar');
-
-            if (!dayObj) {
-                // Friday (جمعه)
-                statusBadge.className = 'text-xs font-bold text-amber-400 mt-0.5';
-                statusBadge.innerText = '☕ روز جمعه (تعطیلات)';
-                countdownEl.innerText = 'امیدواریم هفته عالی داشته باشید!';
-                progressBar.style.width = '0%';
-                return;
-            }
-
-            const currentMins = now.getHours() * 60 + now.getMinutes();
-
-            const dayStart = 7 * 60; // 07:00
-            const morningExamEnd = 7 * 60 + 50; // 07:50
-            const bell1Start = 8 * 60; // 08:00
-            const dayEnd = 15 * 60; // 15:00
-
-            if (currentMins < dayStart) {
-                statusBadge.className = 'text-xs font-bold text-slate-400 mt-0.5';
-                statusBadge.innerText = '🌙 قبل از شروع برنامه‌های مدرسه';
-                countdownEl.innerText = `${dayStart - currentMins} دقیقه تا شروع صبحگاه`;
-                progressBar.style.width = '0%';
-                return;
-            }
-
-            if (currentMins >= dayStart && currentMins < morningExamEnd) {
-                statusBadge.className = 'text-xs font-bold text-amber-400 mt-0.5';
-                statusBadge.innerText = '📝 حضور، صبحگاه و آزمون صبحگاهی';
-                const totalMins = morningExamEnd - dayStart;
-                const elapsed = currentMins - dayStart;
-                const percent = Math.min(100, Math.max(0, (elapsed / totalMins) * 100));
-                countdownEl.innerText = `${morningExamEnd - currentMins} دقیقه تا پایان آزمون`;
-                progressBar.style.width = `${percent}%`;
-                return;
-            }
-
-            if (currentMins >= morningExamEnd && currentMins < bell1Start) {
-                statusBadge.className = 'text-xs font-bold text-cyan-400 mt-0.5';
-                statusBadge.innerText = '⏳ آمادگی برای ورود به زنگ اول';
-                countdownEl.innerText = `${bell1Start - currentMins} دقیقه تا زنگ اول`;
-                progressBar.style.width = '100%';
-                return;
-            }
-
-            if (currentMins >= dayEnd) {
-                statusBadge.className = 'text-xs font-bold text-indigo-400 mt-0.5';
-                statusBadge.innerText = '🏡 پایان ساعات آموزشی امروز';
-                countdownEl.innerText = 'خسته نباشید!';
-                progressBar.style.width = '100%';
-                return;
-            }
-
-            // Check lunch break (12:40 to 13:40)
-            const lunchStart = 12 * 60 + 40;
-            const lunchEnd = 13 * 60 + 40;
-            if (currentMins >= lunchStart && currentMins < lunchEnd) {
-                statusBadge.className = 'text-xs font-bold text-purple-400 mt-0.5';
-                statusBadge.innerText = '🍽️ استراحت، ناهار و نماز';
-                const percent = ((currentMins - lunchStart) / (lunchEnd - lunchStart)) * 100;
-                countdownEl.innerText = `${lunchEnd - currentMins} دقیقه تا زنگ چهارم`;
-                progressBar.style.width = `${percent}%`;
-                return;
-            }
-
-            // Check active bell slots
-            let activeSlotFound = false;
-
-            TIME_SLOTS.forEach(slot => {
-                const [sh, sm] = slot.start.split(':').map(Number);
-                const [eh, em] = slot.end.split(':').map(Number);
-                const sMins = sh * 60 + sm;
-                const eMins = eh * 60 + em;
-
-                if (currentMins >= sMins && currentMins < eMins) {
-                    activeSlotFound = true;
-                    const dayData = SCHEDULE_DATA[dayObj.id];
-                    const periodData = dayData ? dayData.find(p => p.period === slot.id) : null;
-
-                    statusBadge.className = 'text-xs font-bold text-emerald-400 mt-0.5';
-                    if (periodData && !periodData.isOff) {
-                        const titleText = periodData.isSplit ? 'زنگ ترکیبی' : periodData.subject;
-                        statusBadge.innerText = `🟢 ${slot.title}: ${titleText}`;
-                    } else {
-                        statusBadge.innerText = `🟢 ${slot.title}`;
-                    }
-
-                    const elapsed = currentMins - sMins;
-                    const total = eMins - sMins;
-                    const percent = (elapsed / total) * 100;
-
-                    countdownEl.innerText = `⏱️ ${eMins - currentMins} دقیقه تا پایان این زنگ`;
-                    progressBar.style.width = `${percent}%`;
-
-                    // Highlight Active Card in DOM
-                    highlightActiveCardInDOM(dayObj.id, slot.id);
-                }
-            });
-
-            if (!activeSlotFound) {
-                // Break time between bells
-                statusBadge.className = 'text-xs font-bold text-cyan-300 mt-0.5';
-                statusBadge.innerText = '🔔 زنگ استراحت بین کلاس‌ها';
-                countdownEl.innerText = 'زمان آمادگی برای کلاس بعدی';
-                progressBar.style.width = '0%';
-            }
-        }
-
-        function highlightActiveCardInDOM(dayId, periodId) {
-            document.querySelectorAll('.active-period-card').forEach(el => el.classList.remove('active-period-card'));
-            const activeCard = document.getElementById(`card-day-${dayId}-p-${periodId}`);
-            if (activeCard) {
-                activeCard.classList.add('active-period-card');
-            }
-        }
-
-        function scrollToCurrentPeriod() {
-            const now = new Date();
-            const jsDay = now.getDay();
-            const dayObj = WEEK_DAYS.find(d => d.jsDayIndex === jsDay);
-
-            if (!dayObj) {
-                showToast('امروز روز جمعه (تعطیل) است.');
-                return;
-            }
-
-            const currentMins = now.getHours() * 60 + now.getMinutes();
-
-            let targetPeriod = 1;
-            TIME_SLOTS.forEach(slot => {
-                const [sh, sm] = slot.start.split(':').map(Number);
-                const [eh, em] = slot.end.split(':').map(Number);
-                if (currentMins >= (sh * 60 + sm) && currentMins < (eh * 60 + em)) {
-                    targetPeriod = slot.id;
-                }
-            });
-
-            const card = document.getElementById(`card-day-${dayObj.id}-p-${targetPeriod}`);
-            if (card) {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                card.classList.add('ring-2', 'ring-cyan-400');
-                setTimeout(() => card.classList.remove('ring-2', 'ring-cyan-400'), 2500);
-            } else {
-                showToast(`برنامه روز ${dayObj.name} در نمای فعلی نمایش داده شده است.`);
-            }
-        }
-
-        function setDayFilter(dayKey) {
-            currentDayFilter = dayKey;
-
-            document.querySelectorAll('.day-filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-day') === dayKey) {
-                    btn.className = 'day-filter-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-cyan-500 text-slate-950';
-                } else {
-                    btn.className = 'day-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700';
-                }
-            });
-
-            renderScheduleGrid();
-        }
-
-        function switchViewMode(mode) {
-            viewMode = mode;
-            const gridBtn = document.getElementById('viewGridBtn');
-            const dayBtn = document.getElementById('viewDayBtn');
-
-            if (mode === 'grid') {
-                gridBtn.className = 'flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-lg';
-                dayBtn.className = 'flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-400 hover:text-white';
-            } else {
-                dayBtn.className = 'flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg';
-                gridBtn.className = 'flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-400 hover:text-white';
-            }
-
-            renderScheduleGrid();
-        }
-
-        function handleSearch() {
-            searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-            renderScheduleGrid();
-        }
-
-        // Render Primary Schedule Columns
-        function renderScheduleGrid() {
-            const container = document.getElementById('scheduleGridContainer');
-            container.innerHTML = '';
-
-            const now = new Date();
-            const jsToday = now.getDay();
-
-            WEEK_DAYS.forEach(day => {
-                // Check Day Filter
-                if (currentDayFilter !== 'all' && currentDayFilter !== String(day.id)) {
-                    return;
-                }
-
-                const dayClasses = SCHEDULE_DATA[day.id] || [];
-                const isToday = (day.jsDayIndex === jsToday);
-
-                const dayCol = document.createElement('div');
-                dayCol.className = `glass-panel rounded-3xl p-4 space-y-3 flex flex-col border transition-all ${day.color} ${isToday ? 'ring-2 ring-emerald-400/60 shadow-2xl shadow-emerald-500/10' : ''}`;
-
-                // Header for Day Column
-                dayCol.innerHTML = `
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background-color: ${day.accent};"></div>
-                            <h2 class="text-base font-extrabold text-white">${day.name}</h2>
-                        </div>
-                        ${isToday ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">امروز</span>' : ''}
-                    </div>
-                `;
-
-                const periodList = document.createElement('div');
-                periodList.className = 'space-y-3 flex-grow';
-
-                dayClasses.forEach(item => {
-                    const slotInfo = TIME_SLOTS.find(s => s.id === item.period);
-
-                    // Filter search matching
-                    if (!matchesSearchQuery(item)) return;
-
-                    const card = document.createElement('div');
-                    card.id = `card-day-${day.id}-p-${item.period}`;
-
-                    if (item.isOff) {
-                        card.className = 'p-3 rounded-2xl bg-slate-900/40 border border-slate-800/60 text-slate-500 flex items-center justify-between opacity-60';
-                        card.innerHTML = `
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid ${item.icon} text-slate-600 text-sm"></i>
-                                <div>
-                                    <div class="text-xs font-bold text-slate-400">${item.subject}</div>
-                                    <div class="text-[10px] text-slate-600">${slotInfo.time}</div>
-                                </div>
-                            </div>
-                        `;
-                    } else if (item.isSplit) {
-                        // Split Class Slot
-                        let splitHTML = item.parts.map((p, idx) => `
-                            <div class="${idx > 0 ? 'mt-2 pt-2 border-t border-slate-800/80' : ''}">
-                                <div class="flex items-center justify-between mb-0.5">
-                                    <span class="text-[10px] font-mono text-cyan-400/90">${p.time}</span>
-                                    <span class="text-[10px] text-slate-300 font-bold"><i class="fa-solid ${p.icon} ml-1 text-cyan-400"></i>${p.subject}</span>
-                                </div>
-                                <div class="text-xs font-bold text-slate-200 flex items-center gap-1.5 mt-1">
-                                    <i class="fa-solid fa-chalkboard-user text-[11px] text-purple-400"></i>
-                                    <span>${p.teacher}</span>
-                                </div>
-                            </div>
-                        `).join('');
-
-                        card.className = 'p-3.5 rounded-2xl glass-panel glass-panel-interactive border border-slate-800/90 relative overflow-hidden group';
-                        card.innerHTML = `
-                            <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/80">
-                                <span class="text-[11px] font-extrabold text-slate-300">${slotInfo.title}</span>
-                                <span class="px-2 py-0.5 rounded-md text-[9px] font-bold ${item.badgeStyle} border">${item.badge}</span>
-                            </div>
-                            ${splitHTML}
-                        `;
-                    } else {
-                        // Standard Single Lesson Slot
-                        card.className = 'p-3.5 rounded-2xl glass-panel glass-panel-interactive border border-slate-800/90 relative overflow-hidden group';
-                        card.innerHTML = `
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[10px] font-mono text-slate-400">${slotInfo.time}</span>
-                                <span class="px-2 py-0.5 rounded-md text-[9px] font-bold ${item.badgeStyle} border">${item.badge}</span>
-                            </div>
-                            <div class="flex items-center gap-2.5 mb-2">
-                                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm flex-shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid ${item.icon}"></i>
-                                </div>
-                                <h3 class="text-sm font-extrabold text-white group-hover:text-cyan-300 transition-colors">${item.subject}</h3>
-                            </div>
-                            <div class="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800/60">
-                                <span class="text-slate-300 font-medium text-[11px]"><i class="fa-solid fa-user-tie text-cyan-400 ml-1"></i>${item.teacher}</span>
-                                <span class="text-[10px] text-slate-500 font-bold">${slotInfo.title}</span>
-                            </div>
-                        `;
-                    }
-
-                    periodList.appendChild(card);
-                });
-
-                if (periodList.children.length === 0) {
-                    periodList.innerHTML = `
-                        <div class="text-center py-8 text-slate-500 text-xs">
-                            <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block text-slate-600"></i>
-                            درسی با این عبارت یافت نشد
-                        </div>
-                    `;
-                }
-
-                dayCol.appendChild(periodList);
-                container.appendChild(dayCol);
-            });
-        }
-
-        function matchesSearchQuery(item) {
-            if (!searchQuery) return true;
-            if (item.isOff) return false;
-
-            if (item.isSplit) {
-                return item.parts.some(p => 
-                    p.subject.toLowerCase().includes(searchQuery) || 
-                    p.teacher.toLowerCase().includes(searchQuery)
-                );
-            }
-
-            return item.subject.toLowerCase().includes(searchQuery) || item.teacher.toLowerCase().includes(searchQuery);
-        }
-
-        // Copy Full Text Formatted Schedule
-        function copyFullScheduleText() {
-            let output = "📚 برنامه هفتگی کلاس یازدهم ریاضی ب - دبیرستان شهید شهریاری\n\n";
-
-            WEEK_DAYS.forEach(day => {
-                output += `🟢 ${day.name}:\n`;
-                const lessons = SCHEDULE_DATA[day.id] || [];
-                lessons.forEach(l => {
-                    const slot = TIME_SLOTS.find(s => s.id === l.period);
-                    if (l.isOff) {
-                        output += `  ▪️ ${slot.title} (${slot.time}): تعطیل / بدون کلاس\n`;
-                    } else if (l.isSplit) {
-                        output += `  ▪️ ${slot.title} (${slot.time}):\n`;
-                        l.parts.forEach(p => {
-                            output += `      ▫️ [${p.time}] ${p.subject} (استاد: ${p.teacher})\n`;
-                        });
-                    } else {
-                        output += `  ▪️ ${slot.title} (${slot.time}): ${l.subject} | استاد: ${l.teacher}\n`;
-                    }
-                });
-                output += "\n";
-            });
-
-            // Use fallback copy mechanism to handle iframe restrictions
-            const textarea = document.createElement('textarea');
-            textarea.value = output;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-
-            showToast("متن کامل برنامه با موفقیت کپی شد ✨");
-        }
-
-        // Custom Non-blocking Toast Notification
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-6 left-6 z-50 bg-slate-900/95 text-cyan-300 border border-cyan-500/40 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center gap-2 animate-bounce';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400"></i> ${msg}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3200);
-        }
-
-        function renderTeachersModalData() {
-            const map = {};
-
-            Object.keys(SCHEDULE_DATA).forEach(dayId => {
-                const dayName = WEEK_DAYS[dayId].name;
-                SCHEDULE_DATA[dayId].forEach(item => {
-                    if (item.isOff) return;
-                    if (item.isSplit) {
-                        item.parts.forEach(p => {
-                            if (!map[p.teacher]) map[p.teacher] = { subjects: new Set(), days: new Set(), count: 0 };
-                            map[p.teacher].subjects.add(p.subject);
-                            map[p.teacher].days.add(dayName);
-                            map[p.teacher].count++;
-                        });
-                    } else {
-                        if (!map[item.teacher]) map[item.teacher] = { subjects: new Set(), days: new Set(), count: 0 };
-                        map[item.teacher].subjects.add(item.subject);
-                        map[item.teacher].days.add(dayName);
-                        map[item.teacher].count++;
-                    }
-                });
-            });
-
-            const grid = document.getElementById('teachersListGrid');
+        let currentDayFilter = 'all';
+        let currentSearchQuery = '';
+        let activeCourseIdForModal = null;
+
+        // Render Cards
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
             grid.innerHTML = '';
 
-            Object.keys(map).forEach(teacher => {
-                const info = map[teacher];
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2';
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm font-bold border border-purple-500/20">
-                            <i class="fa-solid fa-user-tie"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs font-extrabold text-white">${teacher}</h4>
-                            <p class="text-[11px] text-cyan-400 font-medium">${Array.from(info.subjects).join(' ، ')}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-800/80">
-                        <span>روزها: <strong>${Array.from(info.days).join(' - ')}</strong></span>
-                        <span class="text-purple-300 font-bold bg-purple-950/60 px-2 py-0.5 rounded-md border border-purple-800/30">${info.count} زنگ در هفته</span>
+            const filtered = scheduleData.filter(item => {
+                const matchesDay = (currentDayFilter === 'all') || (item.day === currentDayFilter);
+                const matchesSearch = item.title.includes(currentSearchQuery) || 
+                                      item.teacher.includes(currentSearchQuery) || 
+                                      item.day.includes(currentSearchQuery);
+                return matchesDay && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 glass-panel rounded-2xl">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-3"></i>
+                        <p class="text-slate-400 text-sm">هیچ درسی با این مشخصات یافت نشد.</p>
                     </div>
                 `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `glass-card rounded-2xl p-5 flex flex-col justify-between cursor-pointer relative overflow-hidden group`;
+                card.onclick = () => openModal(item);
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Header Badge -->
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-800/80 text-cyan-400 border border-slate-700">
+                                ${item.day} • زنگ ${item.period}
+                            </span>
+                            <span class="text-xs text-slate-400 flex items-center gap-1">
+                                <i class="fa-regular fa-clock"></i> ${item.time}
+                            </span>
+                        </div>
+
+                        <!-- Course Title & Icon -->
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white text-xl shadow-md group-hover:scale-110 transition-transform">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white group-hover:text-cyan-300 transition-colors">${item.title}</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">${item.teacher}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between mt-2 text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-location-dot text-slate-400 ml-1"></i>${item.room}</span>
+                        <span class="text-cyan-400 font-medium group-hover:translate-x-[-4px] transition-transform flex items-center gap-1">
+                            سرفصل‌ها و جزوات <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                        </span>
+                    </div>
+                `;
+
                 grid.appendChild(card);
             });
         }
 
-        function openTeachersModal() {
-            document.getElementById('teachersModal').classList.remove('hidden');
+        function openModal(course) {
+            activeCourseIdForModal = course.id;
+
+            // Set Header Content
+            document.getElementById('modalTitle').textContent = course.title;
+            document.getElementById('modalTeacher').textContent = course.teacher;
+            
+            const iconBox = document.getElementById('modalIconBox');
+            iconBox.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg bg-gradient-to-tr ${course.color}`;
+            
+            const iconEl = document.getElementById('modalIcon');
+            iconEl.className = `fa-solid ${course.icon}`;
+
+            // Find all sessions for this subject
+            const allSessions = scheduleData.filter(s => s.title === course.title);
+            document.getElementById('modalSessionsCount').textContent = `${allSessions.length} جلسه در هفته`;
+
+            const scheduleList = document.getElementById('modalScheduleList');
+            scheduleList.innerHTML = allSessions.map(s => `
+                <span class="px-3 py-1.5 rounded-xl bg-slate-800 text-xs font-medium text-cyan-300 border border-slate-700">
+                    ${s.day} (زنگ ${s.period} - ساعت ${s.time})
+                </span>
+            `).join('');
+
+            // Syllabus List
+            const syllabusEl = document.getElementById('modalSyllabus');
+            syllabusEl.innerHTML = course.syllabus.map(item => `
+                <li class="hover:text-cyan-200 transition-colors">${item}</li>
+            `).join('');
+
+            // Handouts & Files
+            const handoutsEl = document.getElementById('modalHandouts');
+            handoutsEl.innerHTML = course.handouts.map(h => `
+                <button onclick="downloadSimulate('${h.title}')" class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 transition-all text-right group w-full">
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <i class="fa-solid ${h.icon} ${h.color} text-base"></i>
+                        <span class="text-xs font-medium text-slate-300 group-hover:text-white truncate">${h.title}</span>
+                    </div>
+                    <i class="fa-solid fa-download text-slate-500 group-hover:text-cyan-400 text-xs transition-colors"></i>
+                </button>
+            `).join('');
+
+            // Load Saved LocalStorage Note
+            const savedNote = localStorage.getItem(`note_${course.id}`) || '';
+            document.getElementById('modalNoteInput').value = savedNote;
+
+            // Display Modal with backdrop animation
+            const modal = document.getElementById('courseModal');
+            const container = document.getElementById('modalContainer');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
         }
 
-        function closeTeachersModal() {
-            document.getElementById('teachersModal').classList.add('hidden');
+        function closeModal() {
+            const modal = document.getElementById('courseModal');
+            const container = document.getElementById('modalContainer');
+
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
         }
 
-        // Cyberpunk Background Canvas Animation
-        function initAmbientCanvas() {
-            const canvas = document.getElementById('bgCanvas');
-            const ctx = canvas.getContext('2d');
+        // Close on backdrop click
+        document.getElementById('courseModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
-            let w = (canvas.width = window.innerWidth);
-            let h = (canvas.height = window.innerHeight);
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
 
-            window.addEventListener('resize', () => {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
+        // Save note to LocalStorage
+        function savePersonalNote() {
+            if (!activeCourseIdForModal) return;
+            const noteText = document.getElementById('modalNoteInput').value;
+            localStorage.setItem(`note_${activeCourseIdForModal}`, noteText);
+
+            const status = document.getElementById('saveStatus');
+            status.classList.remove('opacity-0');
+            setTimeout(() => {
+                status.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        // Simulate File Download
+        function downloadSimulate(filename) {
+            alert(`دریافت فایل: "${filename}" با موفقیت شروع شد.`);
+        }
+
+        function filterDay(day) {
+            currentDayFilter = day;
+            document.querySelectorAll('.day-tab').forEach(btn => {
+                if (btn.dataset.day === day) {
+                    btn.className = "day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20 active-tab";
+                } else {
+                    btn.className = "day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white";
+                }
             });
-
-            const dots = Array.from({ length: 45 }, () => ({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                r: Math.random() * 1.8 + 0.8,
-                vx: (Math.random() - 0.5) * 0.35,
-                vy: (Math.random() - 0.5) * 0.35,
-                alpha: Math.random() * 0.4 + 0.1
-            }));
-
-            function draw() {
-                ctx.clearRect(0, 0, w, h);
-
-                dots.forEach(d => {
-                    d.x += d.vx;
-                    d.y += d.vy;
-
-                    if (d.x < 0) d.x = w;
-                    if (d.x > w) d.x = 0;
-                    if (d.y < 0) d.y = h;
-                    if (d.y > h) d.y = 0;
-
-                    ctx.beginPath();
-                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(0, 242, 254, ${d.alpha})`;
-                    ctx.fill();
-                });
-
-                requestAnimationFrame(draw);
-            }
-
-            draw();
+            renderSchedule();
         }
+
+        function handleSearch() {
+            currentSearchQuery = document.getElementById('searchInput').value.trim();
+            renderSchedule();
+        }
+
+        // Live Clock & Jalali Date
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
+            document.getElementById('liveClock').textContent = timeStr;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('fa-IR', options);
+            document.getElementById('liveDate').textContent = dateStr;
+
+            // Simple active time slot updater
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const totalMinutes = hours * 60 + minutes;
+
+            let statusText = "خارج از زمان کلاس‌ها";
+            if (totalMinutes >= 450 && totalMinutes < 540) statusText = "زنگ اول (۰۷:۳۰ - ۰۹:۰۰)";
+            else if (totalMinutes >= 555 && totalMinutes < 645) statusText = "زنگ دوم (۰۹:۱۵ - ۱۰:۴۵)";
+            else if (totalMinutes >= 660 && totalMinutes < 750) statusText = "زنگ سوم (۱۱:۰۰ - ۱۲:۳۰)";
+            else if (totalMinutes >= 765 && totalMinutes < 840) statusText = "زنگ چهارم (۱۲:۴۵ - ۱۴:۰۰)";
+
+            document.getElementById('activeStatusText').textContent = statusText;
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderSchedule();
+            updateClock();
+            setInterval(updateClock, 1000);
+        };
     </script>
 </body>
 </html>
