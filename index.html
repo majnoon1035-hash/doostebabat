@@ -3,760 +3,757 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برنامه هفتگی یازدهم ریاضی ب - دبیرستان شهید شهریاری</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Vazirmatn Persian Font -->
+    <title>برنامه هفتگی یازدهم ریاضی | نسخه پرو</title>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Vazirmatn', 'sans-serif'],
-                    },
-                    colors: {
-                        darkBg: '#0b0f19',
-                        glassBorder: 'rgba(255, 255, 255, 0.12)',
-                        neonCyan: '#00f0ff',
-                        neonPurple: '#a855f7',
-                        neonPink: '#ec4899',
-                        neonEmerald: '#10b981'
-                    },
-                    boxShadow: {
-                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.35)',
-                        'neon-purple': '0 0 20px rgba(168, 85, 247, 0.35)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background: radial-gradient(circle at 10% 20%, #0f172a 0%, #080c14 90%);
-            background-attachment: fixed;
+        :root {
+            --glass-bg: rgba(15, 15, 25, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-blue: #00f3ff;
+            --neon-purple: #9d00ff;
+            --neon-green: #00ff6a;
+            --neon-orange: #ffaa00;
+            --text-main: #e0e6ed;
+            --text-muted: #8b949e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Vazirmatn', sans-serif;
         }
 
-        .glass-panel {
-            background: rgba(18, 26, 43, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        body {
+            background-color: #050505;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .glass-card {
-            background: rgba(30, 41, 59, 0.45);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Animated Background */
+        .bg-orbs {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0f0c29, #302b63, #24243e);
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s infinite alternate;
+        }
+        
+        .orb-1 { width: 400px; height: 400px; background: var(--neon-purple); top: -100px; left: -100px; animation-delay: 0s; }
+        .orb-2 { width: 300px; height: 300px; background: var(--neon-blue); bottom: -50px; right: -50px; animation-delay: -5s; }
+        .orb-3 { width: 350px; height: 350px; background: var(--neon-green); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -10s; opacity: 0.3; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 150px) scale(1.2); }
         }
 
-        .glass-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            background: rgba(30, 41, 59, 0.75);
-            border-color: rgba(0, 240, 255, 0.3);
-            box-shadow: 0 12px 25px -5px rgba(0, 240, 255, 0.15);
+        /* Layout */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .glass-modal {
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Animated Glowing Pulse for current class */
-        @keyframes activePulse {
-            0%, 100% { border-color: rgba(0, 240, 255, 0.8); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
-            50% { border-color: rgba(168, 85, 247, 0.8); box-shadow: 0 0 25px rgba(168, 85, 247, 0.6); }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
         }
 
-        .is-active-period {
-            animation: activePulse 3s infinite ease-in-out;
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .clock-container {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            letter-spacing: 2px;
         }
-        ::-webkit-scrollbar-track {
-            background: #0b0f19;
+
+        /* Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
+
+        .day-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
+
+        .day-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--neon-purple);
+            text-align: center;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.4);
+        }
+
+        /* Class Items */
+        .class-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .class-time {
+            font-size: 0.85rem;
+            color: var(--neon-orange);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .class-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .class-teacher {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .class-item::after {
+            content: '\f07b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+
+        .class-item:hover::after {
+            color: var(--neon-blue);
+        }
+
+        /* Break Time */
+        .break-time {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 255, 106, 0.05);
+            border-radius: 8px;
+            border: 1px dashed rgba(0, 255, 106, 0.3);
+            margin-bottom: 15px;
+            color: var(--neon-green);
+            font-size: 0.9rem;
+        }
+
+        /* Modal / File Manager */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(20, 20, 30, 0.85);
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.2);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover { color: #ff4757; }
+
+        .modal-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-header h2 { color: var(--neon-blue); font-size: 2rem; }
+        .modal-header p { color: var(--text-muted); margin-top: 5px; }
+
+        /* Upload Section */
+        .upload-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        input[type="file"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: var(--neon-purple);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn-upload {
+            background: linear-gradient(45deg, #00f3ff, #0088ff);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 25px;
+        }
+
+        .btn-upload:hover {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        /* Files List */
+        .files-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .file-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .file-icon {
+            font-size: 2.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .file-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-action:hover { background: var(--neon-blue); color: black; }
+        .btn-delete:hover { background: #ff4757; color: white; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen pb-12 selection:bg-cyan-500 selection:text-black">
+<body>
 
-    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px]"></div>
+    <!-- Background Animation -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-
-        <header class="glass-panel rounded-3xl p-6 mb-8 shadow-2xl relative overflow-hidden">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- School Info -->
-                <div class="flex items-center gap-4 text-center md:text-right">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-3xl shadow-lg shadow-cyan-500/30">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
-                            <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">سال تحصیلی ۱۴۰۳-۱۴۰۴</span>
-                            <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">پایه یازدهم ریاضی ب</span>
-                        </div>
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-300">
-                            دبیرستان شهید شهریاری
-                        </h1>
-                        <p class="text-xs text-slate-400 mt-1">سامانه هوشمند برنامه هفتگی، سرفصل‌ها و جزوات دروس</p>
-                    </div>
-                </div>
-
-                <!-- Clock & Status Widget -->
-                <div class="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-                    <!-- Clock -->
-                    <div class="glass-card px-5 py-3 rounded-2xl text-center min-w-[160px] w-full sm:w-auto">
-                        <div class="text-xs text-slate-400 flex items-center justify-center gap-1.5 mb-1">
-                            <i class="fa-regular fa-clock text-cyan-400"></i>
-                            <span>زمان کنونی</span>
-                        </div>
-                        <div id="liveClock" class="text-2xl font-bold font-mono text-cyan-300 tracking-wider">00:00:00</div>
-                        <div id="liveDate" class="text-[11px] text-slate-400 mt-0.5">در حال دریافت...</div>
-                    </div>
-
-                    <!-- Active Session Indicator -->
-                    <div class="glass-card px-5 py-3 rounded-2xl flex items-center gap-3 w-full sm:w-auto border-cyan-500/30">
-                        <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
-                        <div>
-                            <div class="text-xs text-slate-400">وضعیت زنگ درسی</div>
-                            <div id="activeStatusText" class="text-sm font-bold text-emerald-400">زنگ فعال مشخص نیست</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        <header>
+            <h1>برنامه هفتگی یازدهم ریاضی ب</h1>
+            <div class="clock-container" id="live-clock">در حال بارگذاری زمان...</div>
         </header>
 
-        <section class="glass-panel rounded-2xl p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <!-- Day Filters -->
-            <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="dayFilterTabs">
-                <button onclick="filterDay('all')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20 active-tab" data-day="all">
-                    <i class="fa-solid fa-calendar-days ml-1.5"></i> همه روزها
-                </button>
-                <button onclick="filterDay('شنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="شنبه">شنبه</button>
-                <button onclick="filterDay('یکشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="یکشنبه">یکشنبه</button>
-                <button onclick="filterDay('دوشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="دوشنبه">دوشنبه</button>
-                <button onclick="filterDay('سه‌شنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="سه‌شنبه">سه‌شنبه</button>
-                <button onclick="filterDay('چهارشنبه')" class="day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white" data-day="چهارشنبه">چهارشنبه</button>
+        <div class="schedule-grid">
+            <!-- شنبه -->
+            <div class="day-card">
+                <h3 class="day-title">شنبه</h3>
+                <div class="class-item" onclick="openClass('عربی ۲', 'استاد نصیری')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">عربی ۲</div>
+                    <div class="class-teacher">استاد نصیری</div>
+                </div>
+                <div class="class-item" onclick="openClass('عربی ۲ / قرآن', 'اساتید: نصیری / شوشتری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">عربی ۲ / قرآن</div>
+                    <div class="class-teacher">نصیری / شوشتری</div>
+                </div>
+                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد باقری')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">شیمی ۲</div>
+                    <div class="class-teacher">استاد باقری</div>
+                </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('انسان و محیط زیست', 'استاد رضایی')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">انسان و محیط‌زیست</div>
+                    <div class="class-teacher">استاد رضایی</div>
+                </div>
             </div>
 
-            <!-- Search Bar -->
-            <div class="relative w-full md:w-72">
-                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="جستجوی درس، استاد یا زنگ..." 
-                       class="w-full bg-slate-900/80 border border-slate-700/80 focus:border-cyan-400 focus:outline-none rounded-xl pr-9 pl-4 py-2 text-sm text-slate-200 placeholder-slate-500 transition-all">
-            </div>
-        </section>
-
-        <main>
-            <div id="scheduleGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Class cards will be dynamically injected via JavaScript -->
-            </div>
-        </main>
-    </div>
-
-    <div id="courseModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
-        <div id="modalContainer" class="glass-modal w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl transform scale-95 transition-all duration-300 max-h-[90vh] overflow-y-auto">
-            
-            <!-- Modal Header -->
-            <div class="flex items-start justify-between pb-4 border-b border-slate-700/60 mb-6">
-                <div class="flex items-center gap-4">
-                    <div id="modalIconBox" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg">
-                        <i id="modalIcon" class="fa-solid fa-book"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span id="modalTeacher" class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">استاد محمدی</span>
-                            <span id="modalSessionsCount" class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">۲ زنگ در هفته</span>
-                        </div>
-                        <h2 id="modalTitle" class="text-2xl font-bold text-white">فیزیک ۲</h2>
-                    </div>
+            <!-- یکشنبه -->
+            <div class="day-card">
+                <h3 class="day-title">یکشنبه</h3>
+                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد محمدی')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">فیزیک ۲</div>
+                    <div class="class-teacher">استاد محمدی</div>
                 </div>
-                <button onclick="closeModal()" class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حامدرضا حیدری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
+                </div>
+                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد امام')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">هندسه ۲</div>
+                    <div class="class-teacher">استاد امام</div>
+                </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تست حسابان ۱', 'استاد حامدرضا حیدری')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">تست حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
+                </div>
             </div>
 
-            <!-- Modal Content Sections -->
-            <div class="space-y-6 text-sm text-slate-300">
-                
-                <!-- Weekly Time Schedule -->
-                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-                    <h3 class="text-xs font-semibold text-slate-400 mb-2.5 flex items-center gap-2">
-                        <i class="fa-regular fa-clock text-cyan-400"></i> زمان برگزاری در هفته
-                    </h3>
-                    <div id="modalScheduleList" class="flex flex-wrap gap-2">
-                        <!-- Dynamic Sessions -->
-                    </div>
+            <!-- دوشنبه -->
+            <div class="day-card">
+                <h3 class="day-title">دوشنبه</h3>
+                <div class="class-item" onclick="openClass('دین و زندگی ۲', 'استاد فاضل‌نیا')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">دین و زندگی ۲</div>
+                    <div class="class-teacher">استاد فاضل‌نیا</div>
                 </div>
-
-                <!-- Exam Topics & Syllabus -->
-                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-                    <h3 class="text-xs font-semibold text-slate-400 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-purple-400"></i> سرفصل‌ها و مباحث مهم آزمون
-                    </h3>
-                    <ul id="modalSyllabus" class="space-y-2 list-disc list-inside text-slate-300 font-light">
-                        <!-- Dynamic Syllabus items -->
-                    </ul>
+                <div class="class-item" onclick="openClass('زبان انگلیسی ۲', 'استاد یداله حیدری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">زبان انگلیسی ۲</div>
+                    <div class="class-teacher">استاد یداله حیدری</div>
                 </div>
-
-                <!-- Handouts & Downloads -->
-                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-                    <h3 class="text-xs font-semibold text-slate-400 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-file-arrow-down text-emerald-400"></i> جزوات، فرمول‌نامه‌ها و تکالیف
-                    </h3>
-                    <div id="modalHandouts" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Dynamic Download Buttons -->
-                    </div>
+                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد باقری')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">شیمی ۲</div>
+                    <div class="class-teacher">استاد باقری</div>
                 </div>
-
-                <!-- Personal Student Note Section -->
-                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-xs font-semibold text-slate-400 flex items-center gap-2">
-                            <i class="fa-solid fa-pen-to-square text-amber-400"></i> یادداشت شخصی شما برای این درس
-                        </h3>
-                        <span id="saveStatus" class="text-[11px] text-emerald-400 opacity-0 transition-opacity">ذخیره شد!</span>
-                    </div>
-                    <textarea id="modalNoteInput" rows="3" placeholder="یادداشت‌ها، تمرین‌های باقی‌مانده یا تاریخ امتحان این درس را اینجا بنویسید..."
-                              class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition-all resize-none"></textarea>
-                    <div class="mt-2 text-left">
-                        <button onclick="savePersonalNote()" class="px-4 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-medium transition-all flex items-center gap-1.5 ml-auto">
-                            <i class="fa-solid fa-floppy-disk"></i> ذخیره یادداشت
-                        </button>
-                    </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('زبان / زمین‌شناسی', 'اساتید: حیدری / ایمنی')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">زبان / زمین‌شناسی</div>
+                    <div class="class-teacher">حیدری / ایمنی</div>
                 </div>
+            </div>
 
+            <!-- سه‌شنبه -->
+            <div class="day-card">
+                <h3 class="day-title">سه‌شنبه</h3>
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حامدرضا حیدری')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
+                </div>
+                <div class="class-item" onclick="openClass('فارسی و نگارش ۲', 'استاد آورزمان')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">فارسی و نگارش ۲</div>
+                    <div class="class-teacher">استاد آورزمان</div>
+                </div>
+                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد امام')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">هندسه ۲</div>
+                    <div class="class-teacher">استاد امام</div>
+                </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تاریخ معاصر', 'استاد حامد صفرخانیان')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">تاریخ معاصر</div>
+                    <div class="class-teacher">استاد صفرخانیان</div>
+                </div>
+            </div>
+
+            <!-- چهارشنبه -->
+            <div class="day-card">
+                <h3 class="day-title">چهارشنبه</h3>
+                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد محمدی')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">فیزیک ۲</div>
+                    <div class="class-teacher">استاد محمدی</div>
+                </div>
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حامدرضا حیدری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
+                </div>
+                <div class="class-item" onclick="openClass('تست فیزیک ۲', 'استاد محمدی')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">تست فیزیک ۲</div>
+                    <div class="class-teacher">استاد محمدی</div>
+                </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تربیت بدنی ۲', 'استاد هاشمی')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">تربیت بدنی ۲</div>
+                    <div class="class-teacher">استاد هاشمی</div>
+                </div>
+            </div>
+
+            <!-- پنج‌شنبه -->
+            <div class="day-card">
+                <h3 class="day-title">پنج‌شنبه</h3>
+                <div class="class-item" onclick="openClass('آمار و احتمال', 'استاد جعفری')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">آمار و احتمال</div>
+                    <div class="class-teacher">استاد جعفری</div>
+                </div>
+                <div class="class-item" onclick="openClass('تست شیمی ۲', 'استاد باقری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">تست شیمی ۲</div>
+                    <div class="class-teacher">استاد باقری</div>
+                </div>
+                <div class="class-item" onclick="openClass('آمار / فارسی', 'اساتید: جعفری / آورزمان')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">آمار / فارسی</div>
+                    <div class="class-teacher">جعفری / آورزمان</div>
+                </div>
+                <div class="break-time">پایان هفته - خسته نباشید</div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Manager (آرشیو فایل‌ها) -->
+    <div class="modal-overlay" id="fileModal">
+        <div class="modal-content">
+            <i class="fas fa-times close-btn" onclick="closeModal()"></i>
+            
+            <div class="modal-header">
+                <h2 id="modal-title">نام درس</h2>
+                <p id="modal-teacher">استاد مربوطه</p>
+            </div>
+
+            <!-- بخش آپلود -->
+            <div class="upload-section">
+                <div class="input-group">
+                    <label>انتخاب تاریخ کلاس/جزوه:</label>
+                    <input type="date" id="upload-date">
+                </div>
+                <div class="input-group">
+                    <label>انتخاب فایل (PDF, عکس و...):</label>
+                    <input type="file" id="file-input">
+                </div>
+                <button class="btn-upload" onclick="saveFileToDB()"><i class="fas fa-cloud-upload-alt"></i> ذخیره در سیستم</button>
+            </div>
+
+            <!-- بخش فیلتر و نمایش -->
+            <div class="filter-section">
+                <label>فیلتر بر اساس تاریخ:</label>
+                <input type="date" id="filter-date" onchange="loadFilesFromDB()">
+                <button class="btn-action" onclick="document.getElementById('filter-date').value=''; loadFilesFromDB()">نمایش همه</button>
+            </div>
+
+            <div class="files-container" id="files-list">
+                <!-- فایل‌ها اینجا لود میشن -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript - IndexedDB و منطق سیستم -->
     <script>
-        // Database of Subjects and Detailed Info
-        const scheduleData = [
-            // شنبه
-            {
-                id: 'calculus-1',
-                day: 'شنبه',
-                period: 1,
-                time: '۰۷:۳۰ - ۰۹:۰۰',
-                title: 'حسابان ۱',
-                teacher: 'استاد حامدرضا حیدری',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-calculator',
-                color: 'from-violet-600 to-indigo-600',
-                syllabus: [
-                    'فصل ۱: مجموعه‌ها، الگو و دنباله (حسابی و هندسی)',
-                    'فصل ۲: توابع و ویژگی‌های آن (دامنه، برد، توابع زوج و فرد)',
-                    'فصل ۳: حد و پیوستگی توابع (حد چپ و راست، رفع ابهام صفر صفرم)',
-                    'تمرین‌های کلاسی و حل مسائل امتحانی سری دوم'
-                ],
-                handouts: [
-                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
-                    { title: 'فرم‌های نمونه‌سوالات امتحانی ترم اول', type: 'doc', icon: 'fa-file-lines', color: 'text-blue-400' }
-                ]
-            },
-            {
-                id: 'physics-2',
-                day: 'شنبه',
-                period: 2,
-                time: '۰۹:۱۵ - ۱۰:۴۵',
-                title: 'فیزیک ۲',
-                teacher: 'استاد محمدی',
-                room: 'آزمایشگاه فیزیک / ۱۰۲',
-                icon: 'fa-bolt',
-                color: 'from-cyan-500 to-blue-600',
-                syllabus: [
-                    'فصل ۱: الکتریسیته ساکن (قانون کولن، میدان الکتریکی، پتانسیل و ولتاژ)',
-                    'فصل ۲: جریان الکتریکی و مدارهای مستقیم (قانون اوم، مقاومت ویژه، قانون کیرشُف)',
-                    'فصل ۳: مغناطیس و القای الکترومغناطیسی (نیروی لورنتس، قانون فارادی و لنز)',
-                    'فرمول‌های کلیدی فصل ۱ و ۲ و روش‌های حل سریع کنکوری'
-                ],
-                handouts: [
-                    { title: 'فرمول‌نامه کامل فیزیک ۲ (اختصاصی)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
-                    { title: 'جزوه مسائل حل‌شده الکتریسیته ساکن', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
-                    { title: 'تکلیف سری سوم: تحلیل مدارهای چندحلقه‌ای', type: 'task', icon: 'fa-list-check', color: 'text-emerald-400' }
-                ]
-            },
-            {
-                id: 'chemistry-2',
-                day: 'شنبه',
-                period: 3,
-                time: '۱۱:۰۰ - ۱۲:۳۰',
-                title: 'شیمی ۲',
-                teacher: 'استاد باقری',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-flask',
-                color: 'from-emerald-500 to-teal-600',
-                syllabus: [
-                    'فصل ۱: قدر هدایای زمینی را بدانیم (جدول تناوبی و ترکیبات آلی)',
-                    'فصل ۲: در غذایی که می‌خوریم چیست؟ (ترمودینامیک، آنتالپی و قانون هس)',
-                    'حل مسائل استوکیومتری و واکنش‌های ترموشیمیایی'
-                ],
-                handouts: [
-                    { title: 'جدول نکات آرایش الکترونی و جدول تناوبی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' },
-                    { title: 'تمرین‌های استوکیومتری ترمودینامیکی', type: 'doc', icon: 'fa-file-word', color: 'text-blue-400' }
-                ]
-            },
-            {
-                id: 'english-2',
-                day: 'شنبه',
-                period: 4,
-                time: '۱۲:۴۵ - ۱۴:۰۰',
-                title: 'زبان انگلیسی ۲',
-                teacher: 'استاد احمدی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-language',
-                color: 'from-amber-500 to-orange-600',
-                syllabus: [
-                    'Vision 2 - Lesson 1: Asian Cheetah & Endangered Animals',
-                    'Grammar: Passive Voice (افعال مجهول) & Modals',
-                    'Vocabulary & Reading Comprehension Strategies'
-                ],
-                handouts: [
-                    { title: 'واژه‌نامه کامل دروس ۱ و ۲ به همراه مثال', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-
-            // یکشنبه
-            {
-                id: 'geometry-2',
-                day: 'یکشنبه',
-                period: 1,
-                time: '۰۷:۳۰ - ۰۹:۰۰',
-                title: 'هندسه ۲',
-                teacher: 'استاد رضایی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-shapes',
-                color: 'from-pink-500 to-rose-600',
-                syllabus: [
-                    'فصل ۱: دایره (زاویه‌ها در دایره، روابط طولی، مماس)',
-                    'فصل ۲: تبدیل‌های هندسی (انتقال، دوران، بازتاب، تجانس)',
-                    'قضایا و اثبات‌های مهم امتحانی'
-                ],
-                handouts: [
-                    { title: 'جزوه اثبات قضایای هندسه ۲', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'statistics',
-                day: 'یکشنبه',
-                period: 2,
-                time: '۰۹:۱۵ - ۱۰:۴۵',
-                title: 'آمار و احتمال',
-                teacher: 'استاد کریمی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-chart-pie',
-                color: 'from-indigo-500 to-purple-600',
-                syllabus: [
-                    'فصل ۱: منطق ریاضی و نظریه مجموعه‌ها',
-                    'فصل ۲: احتمال شرطی و استقلال پیشامدها',
-                    'قانون احتمال کل و قضیه بیز'
-                ],
-                handouts: [
-                    { title: 'خلاصه نکات فرمول‌های احتمال شرطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'persian-lit',
-                day: 'یکشنبه',
-                period: 3,
-                time: '۱۱:۰۰ - ۱۲:۳۰',
-                title: 'ادبیات فارسی ۲',
-                teacher: 'استاد حسینی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-book-open',
-                color: 'from-red-500 to-pink-600',
-                syllabus: [
-                    'معنی ابیات و آرایه‌های ادبی ستایش تا درس پنجم',
-                    'قواعد دستور زبان: نقش‌های دستوری و گروه اسمی',
-                    'تاریخ ادبیات و اعلام پایان کتاب'
-                ],
-                handouts: [
-                    { title: 'جزوه معنی و آرایه‌های فارسی یازدهم', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-
-            // دوشنبه
-            {
-                id: 'physics-2',
-                day: 'دوشنبه',
-                period: 1,
-                time: '۰۷:۳۰ - ۰۹:۰۰',
-                title: 'فیزیک ۲',
-                teacher: 'استاد محمدی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-bolt',
-                color: 'from-cyan-500 to-blue-600',
-                syllabus: [
-                    'فصل ۲: بررسی دقیق مدارهای جریان مستقیم و افت پتانسیل',
-                    'حل مسائل پیشرفته قانون کیرشُف و توان مصرفی مقاومت‌ها'
-                ],
-                handouts: [
-                    { title: 'فرمول‌نامه کامل فیزیک ۲ (اختصاصی)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'calculus-1',
-                day: 'دوشنبه',
-                period: 2,
-                time: '۰۹:۱۵ - ۱۰:۴۵',
-                title: 'حسابان ۱',
-                teacher: 'استاد حامدرضا حیدری',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-calculator',
-                color: 'from-violet-600 to-indigo-600',
-                syllabus: [
-                    'فصل ۳: محاسبه حد توابع مثلثاتی و رفع ابهام',
-                    'بررسی پیوستگی روی بازه‌ها و نقاط ناپیوستگی'
-                ],
-                handouts: [
-                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'geology',
-                day: 'دوشنبه',
-                period: 3,
-                time: '۱۱:۰۰ - ۱۲:۳۰',
-                title: 'زمین‌شناسی',
-                teacher: 'استاد قاسمیان',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-mountain',
-                color: 'from-amber-600 to-yellow-600',
-                syllabus: [
-                    'فصل ۱: آفرینش کیهان و سنگ‌ها',
-                    'فصل ۲: منابع معدنی و زیرزمینی ایران'
-                ],
-                handouts: [
-                    { title: 'خلاصه کنکوری نکات زمین‌شناسی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-
-            // سه‌شنبه
-            {
-                id: 'chemistry-2',
-                day: 'سه‌شنبه',
-                period: 1,
-                time: '۰۷:۳۰ - ۰۹:۰۰',
-                title: 'شیمی ۲',
-                teacher: 'استاد باقری',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-flask',
-                color: 'from-emerald-500 to-teal-600',
-                syllabus: [
-                    'فصل ۲: آنتالپی پیوند و محاسبه گرمای واکنش',
-                    'تمرین‌های جامع سینتیک و سرعت واکنش‌های شیمیایی'
-                ],
-                handouts: [
-                    { title: 'تمرین‌های استوکیومتری ترمودینامیکی', type: 'doc', icon: 'fa-file-word', color: 'text-blue-400' }
-                ]
-            },
-            {
-                id: 'geometry-2',
-                day: 'سه‌شنبه',
-                period: 2,
-                time: '۰۹:۱۵ - ۱۰:۴۵',
-                title: 'هندسه ۲',
-                teacher: 'استاد رضایی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-shapes',
-                color: 'from-pink-500 to-rose-600',
-                syllabus: [
-                    'فصل ۳: مقاطع مخروطی (بیضی، دایره و سهمی)',
-                    'رسم مقاطع و ویژگی‌های کانون بیضی'
-                ],
-                handouts: [
-                    { title: 'جزوه فرمول‌های مقاطع مخروطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'env-lab',
-                day: 'سه‌شنبه',
-                period: 3,
-                time: '۱۱:۰۰ - ۱۲:۳۰',
-                title: 'انسان و محیط زیست / آزمایشگاه',
-                teacher: 'استاد صادقی',
-                room: 'آزمایشگاه مرکزی',
-                icon: 'fa-leaf',
-                color: 'from-teal-500 to-emerald-600',
-                syllabus: [
-                    'بحران آب، خاک و هوا در ایران',
-                    'انجام آزمایش‌های تجربی فیزیک و شیمی'
-                ],
-                handouts: [
-                    { title: 'دستورکار آزمایش‌های کلاسی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-
-            // چهارشنبه
-            {
-                id: 'calculus-1',
-                day: 'چهارشنبه',
-                period: 1,
-                time: '۰۷:۳۰ - ۰۹:۰۰',
-                title: 'حسابان ۱',
-                teacher: 'استاد حامدرضا حیدری',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-calculator',
-                color: 'from-violet-600 to-indigo-600',
-                syllabus: [
-                    'مفهوم مشتق، شیب خط مماس و مشتق‌پذیری',
-                    'قواعد مشتق‌گیری توابع چندجمله‌ای و کسری'
-                ],
-                handouts: [
-                    { title: 'جزوه جامع حسابان ۱ (استاد حیدری)', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            },
-            {
-                id: 'statistics',
-                day: 'چهارشنبه',
-                period: 2,
-                time: '۰۹:۱۵ - ۱۰:۴۵',
-                title: 'آمار و احتمال',
-                teacher: 'استاد کریمی',
-                room: 'کلاس ۱۰۲',
-                icon: 'fa-chart-pie',
-                color: 'from-indigo-500 to-purple-600',
-                syllabus: [
-                    'متغیرهای تصادفی و توزیع احتمال دوجمله‌ای',
-                    'حل نمونه سوالات امتحانی ترم اول'
-                ],
-                handouts: [
-                    { title: 'خلاصه نکات فرمول‌های احتمال شرطی', type: 'pdf', icon: 'fa-file-pdf', color: 'text-rose-400' }
-                ]
-            }
-        ];
-
-        let currentDayFilter = 'all';
-        let currentSearchQuery = '';
-        let activeCourseIdForModal = null;
-
-        // Render Cards
-        function renderSchedule() {
-            const grid = document.getElementById('scheduleGrid');
-            grid.innerHTML = '';
-
-            const filtered = scheduleData.filter(item => {
-                const matchesDay = (currentDayFilter === 'all') || (item.day === currentDayFilter);
-                const matchesSearch = item.title.includes(currentSearchQuery) || 
-                                      item.teacher.includes(currentSearchQuery) || 
-                                      item.day.includes(currentSearchQuery);
-                return matchesDay && matchesSearch;
-            });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 glass-panel rounded-2xl">
-                        <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-3"></i>
-                        <p class="text-slate-400 text-sm">هیچ درسی با این مشخصات یافت نشد.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = `glass-card rounded-2xl p-5 flex flex-col justify-between cursor-pointer relative overflow-hidden group`;
-                card.onclick = () => openModal(item);
-
-                card.innerHTML = `
-                    <div>
-                        <!-- Header Badge -->
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-800/80 text-cyan-400 border border-slate-700">
-                                ${item.day} • زنگ ${item.period}
-                            </span>
-                            <span class="text-xs text-slate-400 flex items-center gap-1">
-                                <i class="fa-regular fa-clock"></i> ${item.time}
-                            </span>
-                        </div>
-
-                        <!-- Course Title & Icon -->
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white text-xl shadow-md group-hover:scale-110 transition-transform">
-                                <i class="fa-solid ${item.icon}"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-lg text-white group-hover:text-cyan-300 transition-colors">${item.title}</h3>
-                                <p class="text-xs text-slate-400 mt-0.5">${item.teacher}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card Footer -->
-                    <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between mt-2 text-xs">
-                        <span class="text-slate-500"><i class="fa-solid fa-location-dot text-slate-400 ml-1"></i>${item.room}</span>
-                        <span class="text-cyan-400 font-medium group-hover:translate-x-[-4px] transition-transform flex items-center gap-1">
-                            سرفصل‌ها و جزوات <i class="fa-solid fa-chevron-left text-[10px]"></i>
-                        </span>
-                    </div>
-                `;
-
-                grid.appendChild(card);
-            });
+        // 1. تنظیم ساعت زنده
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('live-clock').innerText = dateStr + " - ساعت: " + timeStr;
         }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        function openModal(course) {
-            activeCourseIdForModal = course.id;
+        // 2. مدیریت دیتابیس لوکال (IndexedDB)
+        let db;
+        let currentClass = "";
 
-            // Set Header Content
-            document.getElementById('modalTitle').textContent = course.title;
-            document.getElementById('modalTeacher').textContent = course.teacher;
+        const request = indexedDB.open("SchoolAppDB", 1);
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            // ساخت جدول فایل‌ها
+            if (!db.objectStoreNames.contains("classFiles")) {
+                const store = db.createObjectStore("classFiles", { keyPath: "id", autoIncrement: true });
+                store.createIndex("className", "className", { unique: false });
+                store.createIndex("date", "date", { unique: false });
+            }
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            console.log("دیتابیس متصل شد.");
+        };
+
+        request.onerror = function(event) {
+            console.error("خطا در باز کردن دیتابیس", event);
+        };
+
+        // 3. باز و بسته کردن مودال
+        function openClass(className, teacherName) {
+            currentClass = className;
+            document.getElementById('modal-title').innerText = "کلاس: " + className;
+            document.getElementById('modal-teacher').innerText = teacherName;
             
-            const iconBox = document.getElementById('modalIconBox');
-            iconBox.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg bg-gradient-to-tr ${course.color}`;
+            // ست کردن تاریخ امروز به عنوان پیش‌فرض آپلود
+            document.getElementById('upload-date').valueAsDate = new Date();
             
-            const iconEl = document.getElementById('modalIcon');
-            iconEl.className = `fa-solid ${course.icon}`;
-
-            // Find all sessions for this subject
-            const allSessions = scheduleData.filter(s => s.title === course.title);
-            document.getElementById('modalSessionsCount').textContent = `${allSessions.length} جلسه در هفته`;
-
-            const scheduleList = document.getElementById('modalScheduleList');
-            scheduleList.innerHTML = allSessions.map(s => `
-                <span class="px-3 py-1.5 rounded-xl bg-slate-800 text-xs font-medium text-cyan-300 border border-slate-700">
-                    ${s.day} (زنگ ${s.period} - ساعت ${s.time})
-                </span>
-            `).join('');
-
-            // Syllabus List
-            const syllabusEl = document.getElementById('modalSyllabus');
-            syllabusEl.innerHTML = course.syllabus.map(item => `
-                <li class="hover:text-cyan-200 transition-colors">${item}</li>
-            `).join('');
-
-            // Handouts & Files
-            const handoutsEl = document.getElementById('modalHandouts');
-            handoutsEl.innerHTML = course.handouts.map(h => `
-                <button onclick="downloadSimulate('${h.title}')" class="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 transition-all text-right group w-full">
-                    <div class="flex items-center gap-2.5 overflow-hidden">
-                        <i class="fa-solid ${h.icon} ${h.color} text-base"></i>
-                        <span class="text-xs font-medium text-slate-300 group-hover:text-white truncate">${h.title}</span>
-                    </div>
-                    <i class="fa-solid fa-download text-slate-500 group-hover:text-cyan-400 text-xs transition-colors"></i>
-                </button>
-            `).join('');
-
-            // Load Saved LocalStorage Note
-            const savedNote = localStorage.getItem(`note_${course.id}`) || '';
-            document.getElementById('modalNoteInput').value = savedNote;
-
-            // Display Modal with backdrop animation
-            const modal = document.getElementById('courseModal');
-            const container = document.getElementById('modalContainer');
-            
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            container.classList.remove('scale-95');
-            container.classList.add('scale-100');
+            document.getElementById('fileModal').classList.add('active');
+            loadFilesFromDB(); // لود فایل‌های همین درس
         }
 
         function closeModal() {
-            const modal = document.getElementById('courseModal');
-            const container = document.getElementById('modalContainer');
-
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            container.classList.remove('scale-100');
-            container.classList.add('scale-95');
+            document.getElementById('fileModal').classList.remove('active');
+            document.getElementById('file-input').value = ""; // پاک کردن فایل انتخاب شده
         }
 
-        // Close on backdrop click
-        document.getElementById('courseModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+        // 4. ذخیره فایل در دیتابیس
+        function saveFileToDB() {
+            const fileInput = document.getElementById('file-input');
+            const dateInput = document.getElementById('upload-date').value;
 
-        // Close on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
+            if (fileInput.files.length === 0) {
+                alert("اول یک فایل انتخاب کن داداش!");
+                return;
+            }
+            if (!dateInput) {
+                alert("تاریخ رو مشخص کن!");
+                return;
+            }
 
-        // Save note to LocalStorage
-        function savePersonalNote() {
-            if (!activeCourseIdForModal) return;
-            const noteText = document.getElementById('modalNoteInput').value;
-            localStorage.setItem(`note_${activeCourseIdForModal}`, noteText);
+            const file = fileInput.files[0];
+            const reader = new FileReader();
 
-            const status = document.getElementById('saveStatus');
-            status.classList.remove('opacity-0');
-            setTimeout(() => {
-                status.classList.add('opacity-0');
-            }, 2000);
+            reader.onload = function(e) {
+                const fileData = {
+                    className: currentClass,
+                    date: dateInput,
+                    fileName: file.name,
+                    fileType: file.type,
+                    data: e.target.result // فایل به صورت Base64
+                };
+
+                const transaction = db.transaction(["classFiles"], "readwrite");
+                const store = transaction.objectStore("classFiles");
+                const request = store.add(fileData);
+
+                request.onsuccess = function() {
+                    alert("فایل با موفقیت ذخیره شد!");
+                    fileInput.value = ""; // ریست کردن اینپوت
+                    loadFilesFromDB(); // رفرش لیست
+                };
+
+                request.onerror = function() {
+                    alert("خطا در ذخیره فایل!");
+                };
+            };
+
+            reader.readAsDataURL(file); // تبدیل فایل برای ذخیره
         }
 
-        // Simulate File Download
-        function downloadSimulate(filename) {
-            alert(`دریافت فایل: "${filename}" با موفقیت شروع شد.`);
-        }
+        // 5. خواندن و نمایش فایل‌ها
+        function loadFilesFromDB() {
+            const listContainer = document.getElementById('files-list');
+            listContainer.innerHTML = ""; // پاک کردن لیست قبلی
+            
+            const filterDate = document.getElementById('filter-date').value;
 
-        function filterDay(day) {
-            currentDayFilter = day;
-            document.querySelectorAll('.day-tab').forEach(btn => {
-                if (btn.dataset.day === day) {
-                    btn.className = "day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20 active-tab";
-                } else {
-                    btn.className = "day-tab px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-white";
+            const transaction = db.transaction(["classFiles"], "readonly");
+            const store = transaction.objectStore("classFiles");
+            const index = store.index("className");
+            const request = index.getAll(currentClass); // فقط فایل‌های همین درس
+
+            request.onsuccess = function(event) {
+                const files = event.target.result;
+                let hasFiles = false;
+
+                files.forEach(file => {
+                    // اعمال فیلتر تاریخ اگر انتخاب شده باشه
+                    if (filterDate && file.date !== filterDate) return;
+                    
+                    hasFiles = true;
+
+                    // تعیین آیکون بر اساس نوع فایل
+                    let iconClass = "fa-file";
+                    if(file.fileType.includes("pdf")) iconClass = "fa-file-pdf";
+                    else if(file.fileType.includes("image")) iconClass = "fa-file-image";
+                    else if(file.fileType.includes("video")) iconClass = "fa-file-video";
+                    else if(file.fileType.includes("zip") || file.fileType.includes("rar")) iconClass = "fa-file-archive";
+
+                    // ساخت کارت فایل
+                    const fileCard = document.createElement('div');
+                    fileCard.className = "file-card";
+                    fileCard.innerHTML = `
+                        <i class="fas ${iconClass} file-icon"></i>
+                        <div class="file-name" title="${file.fileName}">${file.fileName}</div>
+                        <div class="file-date">${file.date}</div>
+                        <div class="file-actions">
+                            <a href="${file.data}" download="${file.fileName}" class="btn-action"><i class="fas fa-download"></i></a>
+                            <button class="btn-action btn-delete" onclick="deleteFile(${file.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    listContainer.appendChild(fileCard);
+                });
+
+                if(!hasFiles) {
+                    listContainer.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:#888;'>فایلی برای این تاریخ/درس پیدا نشد.</p>";
                 }
-            });
-            renderSchedule();
+            };
         }
 
-        function handleSearch() {
-            currentSearchQuery = document.getElementById('searchInput').value.trim();
-            renderSchedule();
+        // 6. حذف فایل
+        function deleteFile(id) {
+            if(confirm("مطمئنی می‌خوای این فایل رو پاک کنی؟")) {
+                const transaction = db.transaction(["classFiles"], "readwrite");
+                const store = transaction.objectStore("classFiles");
+                store.delete(id);
+                
+                transaction.oncomplete = function() {
+                    loadFilesFromDB(); // رفرش لیست
+                };
+            }
         }
-
-        // Live Clock & Jalali Date
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
-            document.getElementById('liveClock').textContent = timeStr;
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('fa-IR', options);
-            document.getElementById('liveDate').textContent = dateStr;
-
-            // Simple active time slot updater
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-
-            let statusText = "خارج از زمان کلاس‌ها";
-            if (totalMinutes >= 450 && totalMinutes < 540) statusText = "زنگ اول (۰۷:۳۰ - ۰۹:۰۰)";
-            else if (totalMinutes >= 555 && totalMinutes < 645) statusText = "زنگ دوم (۰۹:۱۵ - ۱۰:۴۵)";
-            else if (totalMinutes >= 660 && totalMinutes < 750) statusText = "زنگ سوم (۱۱:۰۰ - ۱۲:۳۰)";
-            else if (totalMinutes >= 765 && totalMinutes < 840) statusText = "زنگ چهارم (۱۲:۴۵ - ۱۴:۰۰)";
-
-            document.getElementById('activeStatusText').textContent = statusText;
-        }
-
-        // Initialize App
-        window.onload = function() {
-            renderSchedule();
-            updateClock();
-            setInterval(updateClock, 1000);
-        };
     </script>
 </body>
 </html>
