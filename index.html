@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دبیرستان پیام غدیر | یازدهم ریاضی</title>
+    <title>برنامه هفتگی یازدهم ریاضی | پیام غدیر</title>
+    <!-- لود فونت و آیکون‌ها -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- موتور گرافیکی Three.js برای جنگل سه بعدی -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
         :root {
-            --jungle-dark: #020a05;
-            --jungle-mid: #051c11;
-            --jungle-light: #0a3020;
-            --emerald: #059669;
-            --shamrock: #10b981;
-            --neon-green: #34d399;
-            --neon-glow: rgba(52, 211, 153, 0.4);
-            --glass-bg: rgba(10, 30, 20, 0.35);
-            --glass-border: rgba(16, 185, 129, 0.2);
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --fact-bg: rgba(5, 150, 105, 0.15);
+            --glass-bg: rgba(10, 15, 10, 0.65);
+            --glass-border: rgba(100, 255, 150, 0.2);
+            --neon-green: #00ff73;
+            --neon-cyan: #00f3ff;
+            --text-main: #e8f0e8;
+            --text-muted: #9ab09a;
         }
 
         * {
@@ -28,793 +25,750 @@
             margin: 0;
             padding: 0;
             font-family: 'Vazirmatn', sans-serif;
-            user-select: none;
         }
 
         body {
-            background-color: var(--jungle-dark);
+            background-color: #020502;
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
-            perspective: 1000px;
+            position: relative;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--jungle-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--emerald); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--shamrock); }
-
-        #jungle-canvas {
+        /* بوم جنگل سه بعدی در پس زمینه */
+        #bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        .ambient-light {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vw;
-            height: 80vh;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(2, 10, 5, 0) 70%);
             z-index: -1;
-            pointer-events: none;
         }
 
-        .container {
-            max-width: 1400px;
+        /* ساختار ثابت UI */
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
         }
 
         header {
             text-align: center;
             margin-bottom: 50px;
-            padding: 40px;
+            padding: 30px;
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(16, 185, 129, 0.1);
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(30px);
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-            pointer-events: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
         h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
             color: #fff;
-            text-shadow: 0 0 20px var(--neon-glow), 0 0 40px var(--emerald);
-            font-weight: 900;
+            text-shadow: 0 0 20px var(--neon-green);
             letter-spacing: 1px;
         }
 
-        .school-badge {
-            font-size: 1.1rem;
-            color: var(--neon-green);
-            background: rgba(16, 185, 129, 0.1);
-            padding: 8px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-bottom: 20px;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .school-name {
+            font-size: 1.2rem;
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
+        .clock-container {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* گرید برنامه ها */
         .schedule-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
-            transform-style: preserve-3d;
+            gap: 25px;
         }
 
         .day-card {
-            background: linear-gradient(145deg, rgba(10, 30, 20, 0.4), rgba(5, 20, 10, 0.8));
-            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 25px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
         }
-
-        .day-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, transparent, var(--shamrock), transparent);
-            opacity: 0;
-            transition: 0.4s;
-        }
-
-        .day-card:hover {
-            transform: translateY(-10px) translateZ(40px);
-            border-color: var(--emerald);
-            box-shadow: 0 15px 40px rgba(5, 150, 105, 0.3);
-        }
-
-        .day-card:hover::before { opacity: 1; }
 
         .day-title {
             font-size: 1.6rem;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
             color: var(--neon-green);
             text-align: center;
-            text-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+            text-shadow: 0 0 15px rgba(0, 255, 115, 0.4);
         }
 
+        /* کلاس ها */
         .class-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 18px;
+            background: rgba(0, 255, 115, 0.03);
+            border: 1px solid rgba(0, 255, 115, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            overflow: hidden;
         }
 
         .class-item:hover {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: var(--shamrock);
-            box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.1);
-            transform: scale(1.02);
-        }
-
-        .class-item i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            color: rgba(255,255,255,0.1);
-            transition: 0.3s;
-        }
-
-        .class-item:hover i {
-            color: var(--neon-green);
-            transform: translateY(-50%) scale(1.2);
-            text-shadow: 0 0 10px var(--neon-green);
+            background: rgba(0, 255, 115, 0.1);
+            border-color: var(--neon-green);
+            transform: translateX(-5px);
+            box-shadow: -5px 0 15px rgba(0, 255, 115, 0.2);
         }
 
         .class-time {
-            font-size: 0.8rem;
-            color: var(--shamrock);
-            background: rgba(16, 185, 129, 0.1);
-            padding: 2px 8px;
-            border-radius: 8px;
-            align-self: flex-start;
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+            margin-bottom: 5px;
+            display: block;
         }
 
-        .class-name { font-size: 1.25rem; font-weight: 800; color: #fff; }
-        .class-teacher { font-size: 0.85rem; color: var(--text-muted); }
+        .class-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .class-teacher {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
 
         .break-time {
             text-align: center;
             padding: 12px;
-            background: rgba(52, 211, 153, 0.05);
-            border-radius: 12px;
-            border: 1px dashed rgba(52, 211, 153, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
             margin-bottom: 15px;
-            color: var(--shamrock);
+            color: #888;
             font-size: 0.9rem;
-            backdrop-filter: blur(5px);
         }
 
+        /* پنجره مودال آپلود و فکت ها */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 10, 5, 0.9);
+            background: rgba(0, 5, 0, 0.85);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             z-index: 1000;
             display: none;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s;
         }
 
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
 
         .modal-content {
-            background: radial-gradient(circle at top right, rgba(10, 40, 25, 0.95), rgba(5, 15, 10, 0.95));
-            border: 1px solid var(--emerald);
-            box-shadow: 0 0 60px rgba(5, 150, 105, 0.3), inset 0 0 30px rgba(16, 185, 129, 0.1);
-            border-radius: 30px;
-            width: 95%;
-            max-width: 1200px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            background: rgba(10, 20, 15, 0.9);
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 50px rgba(0, 255, 115, 0.15);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 35px;
             position: relative;
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0);
         }
 
         .close-btn {
             position: absolute;
-            top: 25px; left: 25px;
+            top: 25px;
+            left: 25px;
             font-size: 1.8rem;
-            color: var(--text-muted);
+            color: #555;
             cursor: pointer;
             transition: 0.3s;
-            z-index: 10;
-            background: rgba(255,255,255,0.05);
-            width: 45px; height: 45px;
-            display: flex; justify-content: center; align-items: center;
-            border-radius: 50%;
         }
 
-        .close-btn:hover { background: rgba(239, 68, 68, 0.2); color: #ef4444; transform: rotate(90deg); }
+        .close-btn:hover { color: #ff3366; }
 
-        .modal-body {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            height: 100%;
-            gap: 2px;
-            background: rgba(255,255,255,0.05);
+        .modal-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            text-align: center;
         }
 
-        @media (max-width: 992px) {
-            .modal-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; overflow-y: auto;}
-            .modal-content { height: 95vh; }
-        }
+        .modal-header h2 { color: #fff; font-size: 2.2rem; text-shadow: 0 0 10px var(--neon-green); }
+        .modal-header p { color: var(--neon-cyan); margin-top: 5px; font-size: 1.1rem; }
 
-        .fact-sidebar {
-            background: rgba(5, 20, 10, 0.95);
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fact-sidebar::before {
-            content: '\f0eb';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: -20px; right: -20px;
-            font-size: 150px;
-            color: rgba(16, 185, 129, 0.05);
-            transform: rotate(-15deg);
-        }
-
-        .fact-header {
-            font-size: 1.5rem;
-            color: var(--neon-green);
-            margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px;
-            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
-        }
-
-        .fact-content-box {
-            flex: 1;
-            background: var(--fact-bg);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 20px;
-            padding: 25px;
-            position: relative;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fact-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #fff;
-            text-align: justify;
-            opacity: 1;
-            transition: opacity 0.4s;
-        }
-
-        .btn-next-fact {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, var(--emerald), var(--shamrock));
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
-        }
-
-        .btn-next-fact:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(5, 150, 105, 0.6); }
-
-        .file-section {
-            padding: 40px;
-            background: rgba(10, 30, 20, 0.95);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
-        .modal-header-info { margin-bottom: 30px; }
-        .modal-header-info h2 { font-size: 2.5rem; color: #fff; margin-bottom: 5px; }
-        .modal-header-info p { color: var(--text-muted); font-size: 1.1rem; }
-
-        .upload-area {
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px dashed var(--emerald);
-            border-radius: 20px;
-            padding: 30px;
-            display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end;
+        /* فکت علمی پشم ریزون */
+        .mind-blowing-fact {
+            background: linear-gradient(135deg, rgba(0,255,115,0.05) 0%, rgba(0,243,255,0.05) 100%);
+            border-right: 4px solid var(--neon-cyan);
+            padding: 15px 20px;
+            border-radius: 10px 0 0 10px;
             margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d0e0d0;
+            position: relative;
+        }
+        
+        .mind-blowing-fact::before {
+            content: 'فکت پشم‌ریزون:';
+            display: block;
+            color: var(--neon-cyan);
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        /* آپلود فایل */
+        .upload-section {
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed rgba(0, 255, 115, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        input[type="file"], input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            outline: none;
             transition: 0.3s;
         }
-        
-        .upload-area:hover { background: rgba(16, 185, 129, 0.05); border-color: var(--neon-green); }
 
-        .input-group { flex: 1; min-width: 220px; }
-        .input-group label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.95rem; }
-        
-        input[type="file"], input[type="date"] {
-            width: 100%; padding: 12px 15px;
-            background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
-            border-radius: 12px; color: white; outline: none; transition: 0.3s;
+        input[type="file"]:focus, input[type="date"]:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 115, 0.2);
         }
-        
-        input[type="file"]:focus, input[type="date"]:focus { border-color: var(--neon-green); }
-        input[type="file"]::file-selector-button {
-            background: var(--emerald); color: white; border: none;
-            padding: 8px 20px; border-radius: 8px; cursor: pointer; margin-left: 15px; transition: 0.3s;
-        }
-        input[type="file"]::file-selector-button:hover { background: var(--shamrock); }
 
         .btn-upload {
-            background: rgba(16, 185, 129, 0.2);
+            background: rgba(0, 255, 115, 0.1);
             color: var(--neon-green);
-            border: 1px solid var(--emerald);
-            padding: 12px 30px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s;
-            height: 48px; display: flex; align-items: center; gap: 10px;
+            border: 1px solid var(--neon-green);
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .btn-upload:hover { background: var(--emerald); color: #fff; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
 
-        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        
-        .file-card {
-            background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
-            border-radius: 15px; padding: 20px; text-align: center;
-            transition: 0.3s; position: relative; overflow: hidden;
+        .btn-upload:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 115, 0.5);
         }
-        
-        .file-card:hover { transform: translateY(-5px); border-color: var(--shamrock); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .file-icon { font-size: 3rem; color: var(--emerald); margin-bottom: 15px; text-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
-        .file-name { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .file-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; }
+
+        /* لیست فایل ها */
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .files-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .file-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .file-card:hover {
+            background: rgba(0, 255, 115, 0.05);
+            border-color: rgba(0, 255, 115, 0.3);
+        }
+
+        .file-icon { font-size: 3rem; color: var(--neon-cyan); margin-bottom: 15px; }
+        .file-name { font-size: 0.95rem; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        .file-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
         
         .file-actions { display: flex; justify-content: center; gap: 10px; }
+        
         .btn-action {
-            width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
-            background: rgba(255,255,255,0.05); border: none; border-radius: 10px;
-            color: white; cursor: pointer; text-decoration: none; transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
         }
-        .btn-action:hover { background: var(--emerald); }
-        .btn-delete:hover { background: #ef4444; }
 
-        .toast-container {
-            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        .toast {
-            background: rgba(10, 30, 20, 0.95);
-            border-right: 4px solid var(--shamrock);
-            color: #fff; padding: 15px 25px; border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 15px;
-            transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .toast.show { transform: translateX(0); opacity: 1; }
-        .toast.error { border-right-color: #ef4444; }
-        .toast.error i { color: #ef4444; }
-        .toast i { color: var(--shamrock); font-size: 1.2rem; }
+        .btn-action:hover { background: var(--neon-cyan); color: #000; }
+        .btn-delete:hover { background: #ff3366; color: white; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020502; }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
     </style>
 </head>
 <body>
 
-    <canvas id="jungle-canvas"></canvas>
-    <div class="ambient-light"></div>
-    <div class="toast-container" id="toast-container"></div>
+    <!-- بوم سه بعدی جنگل -->
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="container" id="main-container">
+    <!-- لایه ثابت رویی (بدون حرکت) -->
+    <div class="ui-layer">
         <header>
-            <div class="school-badge"><i class="fas fa-school"></i> دبیرستان پیام غدیر</div>
-            <h1>برنامه هفتگی یازدهم ریاضی</h1>
-            <div style="font-size: 1.2rem; color: var(--text-muted); letter-spacing: 1px;" id="live-clock">در حال محاسبه زمان کیهانی...</div>
+            <div class="school-name">دبیرستان پیام غدیر</div>
+            <h1>برنامه هفتگی یازدهم ریاضی ب</h1>
+            <div class="clock-container" id="live-clock">در حال بارگذاری زمان...</div>
         </header>
 
         <div class="schedule-grid">
             <!-- شنبه -->
             <div class="day-card">
                 <h3 class="day-title">شنبه</h3>
-                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد هندسه')">
+                <div class="class-item" onclick="openClass('عربی ۲', 'استاد نصیری')">
                     <span class="class-time">08:00 تا 09:20</span>
-                    <div class="class-name">هندسه ۲</div>
-                    <div class="class-teacher">زنگ اول</div><i class="fas fa-shapes"></i>
+                    <div class="class-name">عربی ۲</div>
+                    <div class="class-teacher">استاد نصیری</div>
                 </div>
-                <div class="class-item" onclick="openClass('فارسی و نگارش ۲', 'استاد ادبیات')">
+                <div class="class-item" onclick="openClass('عربی ۲ / قرآن', 'اساتید: نصیری / شوشتری')">
                     <span class="class-time">09:40 تا 11:00</span>
-                    <div class="class-name">فارسی و نگارش ۲</div>
-                    <div class="class-teacher">زنگ دوم</div><i class="fas fa-book-open"></i>
+                    <div class="class-name">عربی ۲ / قرآن</div>
+                    <div class="class-teacher">نصیری / شوشتری</div>
                 </div>
-                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد شیمی')">
+                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد باقری')">
                     <span class="class-time">11:20 تا 12:40</span>
                     <div class="class-name">شیمی ۲</div>
-                    <div class="class-teacher">زنگ سوم</div><i class="fas fa-flask"></i>
+                    <div class="class-teacher">استاد باقری</div>
                 </div>
-                <div class="break-time"><i class="fas fa-utensils"></i> 12:40 تا 13:40 - ناهار و نماز</div>
-                <div class="class-item" onclick="openClass('دین و زندگی ۲', 'استاد دینی')">
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('انسان و محیط زیست', 'استاد رضایی')">
                     <span class="class-time">13:40 تا 15:00</span>
-                    <div class="class-name">دین و زندگی ۲</div>
-                    <div class="class-teacher">زنگ چهارم</div><i class="fas fa-quran"></i>
+                    <div class="class-name">انسان و محیط‌‌زیست</div>
+                    <div class="class-teacher">استاد رضایی</div>
                 </div>
             </div>
 
             <!-- یکشنبه -->
             <div class="day-card">
                 <h3 class="day-title">یکشنبه</h3>
-                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد فیزیک')">
+                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد محمدی')">
                     <span class="class-time">08:00 تا 09:20</span>
                     <div class="class-name">فیزیک ۲</div>
-                    <div class="class-teacher">زنگ اول</div><i class="fas fa-atom"></i>
+                    <div class="class-teacher">استاد محمدی</div>
                 </div>
-                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حسابان')">
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حیدری')">
                     <span class="class-time">09:40 تا 11:00</span>
                     <div class="class-name">حسابان ۱</div>
-                    <div class="class-teacher">زنگ دوم</div><i class="fas fa-square-root-variable"></i>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
                 </div>
-                <div class="class-item" onclick="openClass('زبان انگلیسی ۲', 'استاد زبان')">
+                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد امام')">
                     <span class="class-time">11:20 تا 12:40</span>
-                    <div class="class-name">زبان انگلیسی ۲</div>
-                    <div class="class-teacher">زنگ سوم</div><i class="fas fa-language"></i>
+                    <div class="class-name">هندسه ۲</div>
+                    <div class="class-teacher">استاد امام</div>
                 </div>
-                <div class="break-time"><i class="fas fa-utensils"></i> 12:40 تا 13:40 - ناهار و نماز</div>
-                <div class="class-item" onclick="openClass('عربی ۲', 'استاد عربی')">
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تست حسابان ۱', 'استاد حیدری')">
                     <span class="class-time">13:40 تا 15:00</span>
-                    <div class="class-name">عربی زبان قرآن ۲</div>
-                    <div class="class-teacher">زنگ چهارم</div><i class="fas fa-mosque"></i>
+                    <div class="class-name">تست حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
                 </div>
             </div>
 
             <!-- دوشنبه -->
             <div class="day-card">
                 <h3 class="day-title">دوشنبه</h3>
-                <div class="class-item" onclick="openClass('آمار و احتمال', 'استاد آمار')">
+                <div class="class-item" onclick="openClass('دین و زندگی ۲', 'استاد فاضل‌نیا')">
                     <span class="class-time">08:00 تا 09:20</span>
-                    <div class="class-name">آمار و احتمال</div>
-                    <div class="class-teacher">زنگ اول</div><i class="fas fa-chart-pie"></i>
+                    <div class="class-name">دین و زندگی ۲</div>
+                    <div class="class-teacher">استاد فاضل‌نیا</div>
                 </div>
-                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد شیمی')">
+                <div class="class-item" onclick="openClass('زبان انگلیسی ۲', 'استاد حیدری')">
                     <span class="class-time">09:40 تا 11:00</span>
-                    <div class="class-name">شیمی ۲</div>
-                    <div class="class-teacher">زنگ دوم</div><i class="fas fa-flask"></i>
+                    <div class="class-name">زبان انگلیسی ۲</div>
+                    <div class="class-teacher">استاد یداله حیدری</div>
                 </div>
-                <div class="class-item" onclick="openClass('تاریخ معاصر', 'استاد تاریخ')">
+                <div class="class-item" onclick="openClass('شیمی ۲', 'استاد باقری')">
                     <span class="class-time">11:20 تا 12:40</span>
-                    <div class="class-name">تاریخ معاصر ایران</div>
-                    <div class="class-teacher">زنگ سوم</div><i class="fas fa-monument"></i>
+                    <div class="class-name">شیمی ۲</div>
+                    <div class="class-teacher">استاد باقری</div>
                 </div>
-                <div class="break-time"><i class="fas fa-utensils"></i> 12:40 تا 13:40 - ناهار و نماز</div>
-                <div class="class-item" onclick="openClass('انسان و محیط زیست', 'استاد محیط زیست')">
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('زبان / زمین‌شناسی', 'اساتید: حیدری / ایمنی')">
                     <span class="class-time">13:40 تا 15:00</span>
-                    <div class="class-name">انسان و محیط زیست</div>
-                    <div class="class-teacher">زنگ چهارم</div><i class="fas fa-leaf"></i>
+                    <div class="class-name">زبان / زمین‌شناسی</div>
+                    <div class="class-teacher">حیدری / ایمنی</div>
                 </div>
             </div>
 
             <!-- سه‌شنبه -->
             <div class="day-card">
                 <h3 class="day-title">سه‌شنبه</h3>
-                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد فیزیک')">
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حیدری')">
                     <span class="class-time">08:00 تا 09:20</span>
-                    <div class="class-name">فیزیک ۲</div>
-                    <div class="class-teacher">زنگ اول</div><i class="fas fa-atom"></i>
-                </div>
-                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حسابان')">
-                    <span class="class-time">09:40 تا 11:00</span>
                     <div class="class-name">حسابان ۱</div>
-                    <div class="class-teacher">زنگ دوم</div><i class="fas fa-square-root-variable"></i>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
                 </div>
-                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد هندسه')">
+                <div class="class-item" onclick="openClass('فارسی و نگارش ۲', 'استاد آورزمان')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">فارسی و نگارش ۲</div>
+                    <div class="class-teacher">استاد آورزمان</div>
+                </div>
+                <div class="class-item" onclick="openClass('هندسه ۲', 'استاد امام')">
                     <span class="class-time">11:20 تا 12:40</span>
                     <div class="class-name">هندسه ۲</div>
-                    <div class="class-teacher">زنگ سوم</div><i class="fas fa-shapes"></i>
+                    <div class="class-teacher">استاد امام</div>
                 </div>
-                <div class="break-time"><i class="fas fa-utensils"></i> 12:40 تا 13:40 - ناهار و نماز</div>
-                <div class="class-item" onclick="openClass('تربیت بدنی ۲', 'استاد ورزش')">
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تاریخ معاصر', 'استاد صفرخانیان')">
                     <span class="class-time">13:40 تا 15:00</span>
-                    <div class="class-name">تربیت بدنی ۲</div>
-                    <div class="class-teacher">زنگ چهارم</div><i class="fas fa-running"></i>
+                    <div class="class-name">تاریخ معاصر</div>
+                    <div class="class-teacher">استاد صفرخانیان</div>
                 </div>
             </div>
 
             <!-- چهارشنبه -->
             <div class="day-card">
                 <h3 class="day-title">چهارشنبه</h3>
-                <div class="class-item" onclick="openClass('آمار و احتمال', 'استاد آمار')">
+                <div class="class-item" onclick="openClass('فیزیک ۲', 'استاد محمدی')">
+                    <span class="class-time">08:00 تا 09:20</span>
+                    <div class="class-name">فیزیک ۲</div>
+                    <div class="class-teacher">استاد محمدی</div>
+                </div>
+                <div class="class-item" onclick="openClass('حسابان ۱', 'استاد حیدری')">
+                    <span class="class-time">09:40 تا 11:00</span>
+                    <div class="class-name">حسابان ۱</div>
+                    <div class="class-teacher">استاد حامدرضا حیدری</div>
+                </div>
+                <div class="class-item" onclick="openClass('تست فیزیک ۲', 'استاد محمدی')">
+                    <span class="class-time">11:20 تا 12:40</span>
+                    <div class="class-name">تست فیزیک ۲</div>
+                    <div class="class-teacher">استاد محمدی</div>
+                </div>
+                <div class="break-time">12:40 تا 13:40 - ناهار و نماز</div>
+                <div class="class-item" onclick="openClass('تربیت بدنی ۲', 'استاد هاشمی')">
+                    <span class="class-time">13:40 تا 15:00</span>
+                    <div class="class-name">تربیت بدنی ۲</div>
+                    <div class="class-teacher">استاد هاشمی</div>
+                </div>
+            </div>
+
+            <!-- پنج‌شنبه -->
+            <div class="day-card">
+                <h3 class="day-title">پنج‌شنبه</h3>
+                <div class="class-item" onclick="openClass('آمار و احتمال', 'استاد جعفری')">
                     <span class="class-time">08:00 تا 09:20</span>
                     <div class="class-name">آمار و احتمال</div>
-                    <div class="class-teacher">زنگ اول</div><i class="fas fa-chart-pie"></i>
+                    <div class="class-teacher">استاد جعفری</div>
                 </div>
-                <div class="class-item" onclick="openClass('زمین شناسی', 'استاد زمین شناسی')">
+                <div class="class-item" onclick="openClass('تست شیمی ۲', 'استاد باقری')">
                     <span class="class-time">09:40 تا 11:00</span>
-                    <div class="class-name">زمین شناسی</div>
-                    <div class="class-teacher">زنگ دوم</div><i class="fas fa-globe-asia"></i>
+                    <div class="class-name">تست شیمی ۲</div>
+                    <div class="class-teacher">استاد باقری</div>
                 </div>
-                <div class="class-item" onclick="openClass('کارگاه کارآفرینی', 'استاد کارآفرینی')">
+                <div class="class-item" onclick="openClass('آمار / فارسی', 'اساتید: جعفری / آورزمان')">
                     <span class="class-time">11:20 تا 12:40</span>
-                    <div class="class-name">کارگاه نوآوری</div>
-                    <div class="class-teacher">زنگ سوم</div><i class="fas fa-lightbulb"></i>
+                    <div class="class-name">آمار / فارسی</div>
+                    <div class="class-teacher">جعفری / آورزمان</div>
                 </div>
-                <div class="break-time">پایان هفته - خسته نباشید <i class="fas fa-smile"></i></div>
-            </div>
-            
-            <!-- پنجشنبه (کلاس‌های فوق‌برنامه یا تست) -->
-            <div class="day-card" style="border-color: rgba(52, 211, 153, 0.4);">
-                <h3 class="day-title" style="color: #fff;">پنج‌شنبه (فوق برنامه)</h3>
-                <div class="class-item" onclick="openClass('تست فیزیک ۲', 'استاد فیزیک')">
-                    <span class="class-time">08:00 تا 10:00</span>
-                    <div class="class-name">تست فیزیک ۲</div>
-                    <div class="class-teacher">تکمیلی</div><i class="fas fa-rocket"></i>
-                </div>
-                <div class="class-item" onclick="openClass('تست حسابان ۱', 'استاد حسابان')">
-                    <span class="class-time">10:15 تا 12:15</span>
-                    <div class="class-name">تست حسابان ۱</div>
-                    <div class="class-teacher">تکمیلی</div><i class="fas fa-brain"></i>
-                </div>
+                <div class="break-time">پایان هفته - خسته نباشید!</div>
             </div>
         </div>
     </div>
 
+    <!-- مودال فایل ها -->
     <div class="modal-overlay" id="fileModal">
         <div class="modal-content">
-            <div class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <i class="fas fa-times close-btn" onclick="closeModal()"></i>
             
-            <div class="modal-body">
-                <!-- بخش فایل‌ها -->
-                <div class="file-section">
-                    <div class="modal-header-info">
-                        <h2 id="modal-title">نام درس</h2>
-                        <p id="modal-teacher">مدیریت فایل‌ها و جزوات اختصاصی</p>
-                    </div>
+            <div class="modal-header">
+                <h2 id="modal-title">نام درس</h2>
+                <p id="modal-teacher">استاد مربوطه</p>
+            </div>
 
-                    <div class="upload-area">
-                        <div class="input-group">
-                            <label><i class="fas fa-calendar-alt"></i> تاریخ جلسه / جزوه:</label>
-                            <input type="date" id="upload-date">
-                        </div>
-                        <div class="input-group">
-                            <label><i class="fas fa-file-upload"></i> انتخاب فایل از سیستم:</label>
-                            <input type="file" id="file-input">
-                        </div>
-                        <button class="btn-upload" onclick="saveFileToDB()">
-                            <i class="fas fa-cloud-upload-alt"></i> ذخیره در پایگاه
-                        </button>
-                    </div>
+            <!-- باکس فکت علمی -->
+            <div class="mind-blowing-fact" id="fact-box">
+                در حال بارگذاری اطلاعات طبقه بندی شده...
+            </div>
 
-                    <div style="margin-bottom: 20px; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">
-                        <i class="fas fa-folder-open"></i> آرشیو فایل‌های این درس:
-                    </div>
-
-                    <div class="files-grid" id="files-list">
-                        <!-- Files will be injected here -->
-                    </div>
+            <div class="upload-section">
+                <div class="input-group">
+                    <label>تاریخ جزوه/فایل:</label>
+                    <input type="date" id="upload-date">
                 </div>
-
-                <!-- بخش فکت‌های علمی (پشم‌ریزون) -->
-                <div class="fact-sidebar">
-                    <div class="fact-header">
-                        <i class="fas fa-bolt"></i> فکت‌های علمی پشم‌ریزون!
-                    </div>
-                    <div class="fact-content-box">
-                        <div class="fact-text" id="fact-display">در حال استخراج رازهای کیهان...</div>
-                    </div>
-                    <button class="btn-next-fact" onclick="showNextFact()">
-                        فکت بعدی <i class="fas fa-arrow-left" style="margin-right: 5px;"></i>
-                    </button>
+                <div class="input-group">
+                    <label>انتخاب فایل:</label>
+                    <input type="file" id="file-input">
                 </div>
+                <button class="btn-upload" onclick="saveFileToDB()"><i class="fas fa-upload"></i> ذخیره در بایگانی</button>
+            </div>
+
+            <div class="filter-section">
+                <label>فیلتر تاریخ:</label>
+                <input type="date" id="filter-date" onchange="loadFilesFromDB()">
+                <button class="btn-action" onclick="document.getElementById('filter-date').value=''; loadFilesFromDB()">نمایش همه</button>
+            </div>
+
+            <div class="files-container" id="files-list">
+                <!-- فایل ها -->
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. Clock Logic ---
+        // ==========================================
+        // بخش ۱: سیستم جنگل سه بعدی (Three.js)
+        // ==========================================
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        // ایجاد مه تاریک جنگل
+        scene.fog = new THREE.FogExp2(0x020502, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        // نورپردازی محیطی تاریک
+        const ambientLight = new THREE.AmbientLight(0x0a1a0a, 1.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x00ff73, 2, 50);
+        scene.add(pointLight);
+
+        // ساخت درخت‌ها به صورت Procedural
+        const trees = [];
+        const treeGeometry = new THREE.CylinderGeometry(0.5, 1.2, 25, 5);
+        const treeMaterial = new THREE.MeshLambertMaterial({ color: 0x0a0f0a });
+        
+        // برگ‌ها/بخش بالایی درخت
+        const leavesGeometry = new THREE.ConeGeometry(5, 15, 5);
+        const leavesMaterial = new THREE.MeshLambertMaterial({ 
+            color: 0x021a05, 
+            emissive: 0x002205,
+            flatShading: true
+        });
+
+        // ایجاد 100 درخت در فواصل مختلف
+        for (let i = 0; i < 100; i++) {
+            const treeGroup = new THREE.Group();
+            
+            const trunk = new THREE.Mesh(treeGeometry, treeMaterial);
+            trunk.position.y = 12.5;
+            
+            const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+            leaves.position.y = 25;
+
+            treeGroup.add(trunk);
+            treeGroup.add(leaves);
+
+            // موقعیت تصادفی تو عمق (Z) و عرض (X)
+            treeGroup.position.x = (Math.random() - 0.5) * 100;
+            // خالی کردن مسیر وسط برای حرکت دوربین
+            if(treeGroup.position.x > -5 && treeGroup.position.x < 5) {
+                treeGroup.position.x = treeGroup.position.x > 0 ? 10 : -10;
+            }
+            treeGroup.position.z = (Math.random() - 0.5) * 150;
+            
+            // چرخش رندوم برای طبیعی تر شدن
+            treeGroup.rotation.y = Math.random() * Math.PI;
+
+            scene.add(treeGroup);
+            trees.push(treeGroup);
+        }
+
+        // ذرات درخشان (کرم‌های شب‌تاب)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 300;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 100; // X, Y, Z
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.15,
+            color: 0x00ff73,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.y = 2; // ارتفاع چشم در جنگل
+        camera.position.z = 50;
+
+        let clock = new THREE.Clock();
+
+        // حلقه انیمیشن بی نهایت
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+
+            // حرکت دوربین به جلو
+            camera.position.z -= 5 * delta;
+
+            // نور دوربین رو دنبال کنه
+            pointLight.position.set(camera.position.x, camera.position.y + 2, camera.position.z);
+
+            // چرخش آروم کرم های شب تاب
+            particlesMesh.position.z = camera.position.z - 20;
+            particlesMesh.rotation.y = time * 0.05;
+            particlesMesh.rotation.z = Math.sin(time * 0.1) * 0.1;
+
+            // لوپ کردن درخت ها بی نهایت
+            trees.forEach(tree => {
+                if(tree.position.z > camera.position.z + 10) {
+                    tree.position.z -= 150;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // تنظیم سایز موقع تغییر پنجره
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+
+        // ==========================================
+        // بخش ۲: دیتاهای فکت‌های پشم‌ریزون
+        // ==========================================
+        const scienceFacts = {
+            'فیزیک ۲': [
+                "اگه بتونی با سرعت نور حرکت کنی، زمان برات کاملاً متوقف میشه! یعنی اگه ۱ میلیون سال تو فضا سفر کنی، حتی یک ثانیه هم پیر نمیشی.",
+                "بیشتر از ۹۹.۹۹۹۹۹٪ اتم از فضای خالی تشکیل شده. یعنی اگه فضای خالیِ بین ذراتِ بدن تمام آدم‌های روی زمین رو حذف کنیم، کل نسل بشر تو یک حبه قند جا میشه!",
+                "گرافین، ماده‌ای که فقط ضخامت یک اتم کربن رو داره، ۲۰۰ برابر قوی‌تر از فولاد ساختمانیه. باهاش میشه آسانسور فضایی ساخت.",
+                "یک قاشق چای‌خوری از ستاره نوترونی، حدود ۱۰ میلیارد تن وزن داره! یعنی هم‌‌وزن کوه اورست روی یه قاشق کوچیک."
+            ],
+            'حسابان ۱': [
+                "پارادوکس باناخ-تارسکی تو ریاضیات ثابت می‌کنه که می‌تونی یک توپ رو به ۵ تیکه تقسیم کنی، و دوباره با همون ۵ تیکه، دو تا توپ دقیقاً هم‌اندازه توپ اول بسازی!",
+                "شیپور گابریل تو هندسه، شکلیه که مساحت سطحش بی‌نهایت بزرگه، اما حجمش محدوده! یعنی می‌تونی توش رو با رنگ پر کنی، ولی هیچ‌وقت نمی‌تونی بیرونش رو رنگ بزنی.",
+                "مفهوم بی‌نهایت تو ریاضیات درجه‌بندی داره! بعضی بی‌نهایت‌ها از بقیه بی‌نهایت‌ها بزرگترن (نظریه مجموعه‌های کانتور)."
+            ],
+            'شیمی ۲': [
+                "توی بدن انسان اونقدر DNA هست که اگه بازش کنی، میتونه فاصله بین زمین تا خورشید رو ۳۰۰ بار بره و برگرده!",
+                "آب تنها ماده‌‌ایه که وقتی یخ می‌زنه حجمش بیشتر میشه. اگه این خاصیت نبود، تمام اقیانوس‌ها از پایین به بالا یخ می‌زدن و حیات نابود می‌شد.",
+                "اسید فلوئورانتیمونیک ده هزار میلیارد میلیارد بار قوی‌تر از اسید معده است! می‌‌تونه حتی شیشه رو مثل قند تو چای حل کنه."
+            ],
+            'هندسه ۲': [
+                "توی هندسه نااقلیدسی، مجموع زوایای یک مثلث دیگه ۱۸۰ درجه نیست! اگه روی سطح یک کره مثلث بکشی، مجموع زوایاش بیشتر از ۱۸۰ میشه.",
+                "ابعاد بالاتر: ما تو فضای ۳ بعدی هستیم. تو هندسه اگه یه شکل ۴ بعدی (تسرکت) وارد دنیای ما بشه، ما فقط تغییر شکل دائمیش رو می‌بینیم."
+            ],
+            'آمار و احتمال': [
+                "پارادوکس تولد: تو یه اتاق با فقط ۲۳ نفر، ۵۰ درصد احتمال داره دو نفر تولدشون تو یه روز باشه! با ۷۰ نفر این احتمال میشه ۹۹.۹ درصد.",
+                "اگه یک دسته کارت پاسور رو بُر بزنی، ترتیبی که به دست میاد به احتمال ۹۹.۹۹٪ در کل تاریخ کیهان تا حالا وجود نداشته!"
+            ]
+        };
+
+        const defaultFacts = [
+            "تعداد درخت‌های روی کره زمین، از تعداد ستاره‌های کهکشان راه شیری بیشتره!",
+            "بدن ما از خاکسترهای ستارگان مرده تشکیل شده. اتم‌های دست چپ شما ممکنه از یک ستاره متفاوت نسبت به دست راستتون اومده باشن.",
+            "شبکه زیرزمینی قارچ‌ها (Mycelium) تو جنگل مثل اینترنت عمل می‌کنه و درخت‌ها از طریق اون با هم حرف می‌زنن و مواد مغذی رد و بدل می‌کنن."
+        ];
+
+
+        // ==========================================
+        // بخش ۳: منطق برنامه و IndexedDB
+        // ==========================================
         function updateClock() {
             const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('live-clock').innerText = 
-                now.toLocaleDateString('fa-IR', dateOptions) + " | " + now.toLocaleTimeString('fa-IR', timeOptions);
+            const timeStr = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('live-clock').innerText = dateStr + " - ساعت " + timeStr;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- 2. 3D Parallax Mouse Effect ---
-        document.addEventListener('mousemove', (e) => {
-            const container = document.getElementById('main-container');
-            if(!container) return;
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
-            container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-
-        // --- 3. Custom Toast Notification System ---
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-            toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
-            
-            container.appendChild(toast);
-            
-            // Trigger animation
-            setTimeout(() => toast.classList.add('show'), 10);
-            
-            // Remove after 3.5 seconds
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
-
-        // --- 4. The Mind-Blowing Facts Dictionary (فکت‌های پشم‌ریزون) ---
-        const hardCoreFacts = {
-            'فیزیک': [
-                "جوشکاری سرد: اگر دو قطعه فلز بدون هیچ پوششی در خلأ فضا به هم برخورد کنند، برای همیشه به هم جوش می‌خورند و یکی می‌شوند!",
-                "درهم‌تنیدگی کوانتومی: دو ذره می‌توانند طوری به هم متصل شوند که تغییر یکی، فوراً وضعیت دیگری را تغییر دهد؛ حتی اگر میلیاردها سال نوری از هم فاصله داشته باشند!",
-                "اتساع زمان: اگر یک سال با سرعت نزدیک به نور در فضا سفر کنید، وقتی به زمین برگردید، دوستان شما پیر شده یا مرده‌اند، اما شما فقط یک سال بزرگتر شده‌اید!",
-                "سیاه‌چاله‌ها و اسپاگتی‌سازی: اگر به یک سیاه‌چاله نزدیک شوید، جاذبه روی پاهای شما بسیار بیشتر از سرتان خواهد بود و شما را مثل یک رشته اسپاگتی تا بی‌نهایت می‌کِشد!",
-                "یک قاشق چای‌خوری از ستاره نوترونی روی کره زمین وزنی معادل کل کوه اورست (حدود ۶ میلیارد تن) دارد!",
-                "مغز بولتزمن: از نظر ترمودینامیک، احتمال اینکه همین الان یک مغز کامل با تمام خاطرات شما به صورت تصادفی از ذرات معلق در فضا تشکیل شده باشد، بیشتر از احتمال به وجود آمدن کل جهان هستی است!"
-            ],
-            'حسابان': [
-                "پارادوکس باناخ-تارسکی: از نظر ریاضیات محض، شما می‌توانید یک توپ کروی را به چند تکه تقسیم کنید و بدون کشیدن یا اضافه کردن چیزی، دو توپ کاملاً هم‌اندازه توپ اول بسازید!",
-                "بی‌نهایت‌های بزرگتر: بی‌نهایت انواع مختلفی دارد! جالب است بدانید تعداد اعداد اعشاری بین 0 و 1 به طرز عجیبی بسیار بزرگتر از تعداد کل اعداد صحیح جهان (1, 2, 3...) است!",
-                "شیپور گابریل: یک شکل هندسی فضایی وجود دارد که حجم آن کاملاً محدود است (می‌توانید داخل آن را با رنگ پر کنید)، اما مساحت سطح آن بی‌نهایت است (هیچ‌وقت نمی‌توانید بیرون آن را رنگ کنید)!",
-                "اگر یک تکه کاغذ معمولی را فقط 42 بار از وسط تا بزنید، ضخامت آن به کره ماه می‌رسد! و اگر 103 بار تا بزنید، از کل جهان قابل مشاهده بزرگتر می‌شود!",
-                "مجموع تمام اعداد صحیح مثبت (1+2+3+4+...) در فیزیک کوانتوم و نظریه ریسمان برابر است با منفی یک دوازدهم (-1/12)!"
-            ],
-            'هندسه': [
-                "هندسه نااقلیدسی: در فضاهای خمیده، مجموع زوایای یک مثلث دیگر ۱۸۰ درجه نیست! روی سطح یک کره، یک مثلث می‌تواند سه زاویه ۹۰ درجه داشته باشد (مجموع ۲۷۰ درجه)!",
-                "بُعد چهارم: تسراکت (Tesseract) یک مکعب چهار بعدی است. همانطور که مکعب سه‌بعدی از ۶ مربع دوبعدی ساخته شده، تسراکت از ۸ مکعب سه‌بعدی تشکیل شده است!",
-                "فرکتال‌ها: خط ساحلی بریتانیا طول مشخصی ندارد! هرچه خط‌کش شما کوچکتر و دقیق‌تر باشد، طول خط ساحلی به بی‌نهایت میل می‌کند (پدیده فرکتال)."
-            ],
-            'شیمی': [
-                "باران الماس: در سیارات غول‌پیکر مثل مشتری و زحل، فشار و رعدوبرق‌های اتمسفری باعث می‌شود که متان به کربن تبدیل شده و از آسمان تکه‌های الماس ببارد!",
-                "نقطه سه‌گانه آب: در یک دما و فشار کاملاً مشخص در محیط خلأ، آب می‌تواند به طور همزمان هم بجوشد، هم یخ بزند و هم مایع بماند!",
-                "اگر تمام رشته‌های DNA موجود در بدن یک انسان باز شود و پشت سر هم قرار گیرد، طول آن به اندازه‌ای است که می‌تواند 300 بار فاصله زمین تا خورشید را برود و برگردد!",
-                "گرافن: یک لایه از اتم‌های کربن، 200 برابر قوی‌تر از فولاد است. یک ورقه گرافن به ضخامت پلاستیک سلفون می‌تواند وزن یک فیل را تحمل کند در حالی که خودش از یک پر سبک‌تر است!",
-                "بدن شما هر روز حدود چند صد سلول سرطانی تولید می‌کند، اما سیستم ایمنی شما بلافاصله آن‌ها را شناسایی کرده و می‌کشد!"
-            ],
-            'آمار': [
-                "پارادوکس مونتی هال: در یک مسابقه تلویزیونی، اگر از بین 3 در یکی را انتخاب کنید و مجری یک در پوچ را باز کند، اگر انتخاب خود را تغییر دهید شانس برنده شدن شما 2 برابر می‌شود!",
-                "قضیه میمون نامتناهی: اگر یک میمون را پشت ماشین تحریر بنشانید و تا بی‌نهایت زمان به او بدهید تا تصادفی دکمه‌ها را فشار دهد، قطعاً روزی نمایشنامه هملت شکسپیر را کلمه به کلمه و دقیق تایپ خواهد کرد!",
-                "پارادوکس تولد: در یک اتاق که فقط 23 نفر در آن حضور دارند، 50 درصد احتمال دارد که حداقل دو نفر از آن‌ها دقیقاً در یک روز و ماه به دنیا آمده باشند!"
-            ],
-            'general': [
-                "مغز شما در حالت بیداری آنقدر پالس الکتریکی تولید می‌کند که می‌تواند یک لامپ LED کوچک را روشن کند!",
-                "ما در واقع همیشه در حال تماشای گذشته هستیم. وقتی به ستاره‌ای در فاصله 100 سال نوری نگاه می‌کنیم، در حال تماشای وضعیت 100 سال پیش آن ستاره هستیم!",
-                "در هسته خورشید، تراکم به حدی زیاد است که یک میلیون سال طول می‌کشد تا فوتون نوری که تولید شده به سطح خورشید برسد و بعد فقط 8 دقیقه طول می‌کشد تا به زمین برسد!",
-                "تعداد اتم‌های موجود در یک لیوان آب، از تعداد کل لیوان‌های آبی که در تمام اقیانوس‌های کره زمین وجود دارد بیشتر است!"
-            ]
-        };
-
-        let currentClassFacts = [];
-        let currentFactIndex = 0;
+        let db;
         let currentClass = "";
 
-        function setupFacts(className) {
-            // پیدا کردن دسته فکت بر اساس اسم درس
-            let category = 'general';
-            if (className.includes('فیزیک')) category = 'فیزیک';
-            else if (className.includes('حسابان')) category = 'حسابان';
-            else if (className.includes('هندسه')) category = 'هندسه';
-            else if (className.includes('شیمی')) category = 'شیمی';
-            else if (className.includes('آمار')) category = 'آمار';
-
-            currentClassFacts = [...hardCoreFacts[category]];
-            // بر هم زدن آرایه فکت‌ها به صورت تصادفی
-            currentClassFacts.sort(() => Math.random() - 0.5);
-            currentFactIndex = 0;
-            displayCurrentFact();
-        }
-
-        function displayCurrentFact() {
-            const factBox = document.getElementById('fact-display');
-            factBox.style.opacity = 0; // Fade out
-            
-            setTimeout(() => {
-                factBox.innerText = currentClassFacts[currentFactIndex];
-                factBox.style.opacity = 1; // Fade in
-            }, 400);
-        }
-
-        function showNextFact() {
-            currentFactIndex++;
-            if (currentFactIndex >= currentClassFacts.length) {
-                currentFactIndex = 0; // Loop back
+        const request = indexedDB.open("PayamGhadirDB", 1);
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("classFiles")) {
+                const store = db.createObjectStore("classFiles", { keyPath: "id", autoIncrement: true });
+                store.createIndex("className", "className", { unique: false });
+                store.createIndex("date", "date", { unique: false });
             }
-            displayCurrentFact();
-        }
+        };
+        request.onsuccess = function(e) { db = e.target.result; };
 
-        let db;
-        const dbName = "PayamGhadirDB";
-        
-        function initDB() {
-            const request = indexedDB.open(dbName, 1);
-            
-            request.onerror = (event) => {
-                console.error("Database Error:", event.target.error);
-                showToast("خطا در اتصال به پایگاه داده محلی", "error");
-            };
-            
-            request.onupgradeneeded = (event) => {
-                db = event.target.result;
-                if (!db.objectStoreNames.contains("class_files")) {
-                    const store = db.createObjectStore("class_files", { keyPath: "id", autoIncrement: true });
-                    store.createIndex("classId", "classId", { unique: false });
-                }
-            };
-            
-            request.onsuccess = (event) => {
-                db = event.target.result;
-                console.log("پایگاه داده هوشمند متصل شد.");
-            };
-        }
-        initDB(); // فراخوانی در ابتدای کار
-
-        // --- Modal Interactions ---
         function openClass(className, teacherName) {
             currentClass = className;
             document.getElementById('modal-title').innerText = className;
+            document.getElementById('modal-teacher').innerText = teacherName;
             document.getElementById('upload-date').valueAsDate = new Date();
             
-            // Setup Facts
-            setupFacts(className);
+            // تنظیم فکت علمی
+            const factBox = document.getElementById('fact-box');
+            let factsArray = defaultFacts;
             
-            // Show Modal
+            // پیدا کردن فکت مربوط به درس
+            for(let key in scienceFacts) {
+                if(className.includes(key) || key.includes(className.split(' ')[0])) {
+                    factsArray = scienceFacts[key];
+                    break;
+                }
+            }
+            
+            const randomFact = factsArray[Math.floor(Math.random() * factsArray.length)];
+            factBox.innerText = randomFact;
+            
             document.getElementById('fileModal').classList.add('active');
-            
-            // Load Files
             loadFilesFromDB();
         }
 
@@ -823,183 +777,82 @@
             document.getElementById('file-input').value = "";
         }
 
-        // --- Offline Database Functions ---
         function saveFileToDB() {
             const fileInput = document.getElementById('file-input');
             const dateInput = document.getElementById('upload-date').value;
 
-            if (fileInput.files.length === 0) {
-                showToast("ابتدا یک فایل یا جزوه انتخاب کنید!", "error");
-                return;
-            }
-            if (!dateInput) {
-                showToast("تاریخ جلسه را مشخص کنید!", "error");
-                return;
-            }
+            if (fileInput.files.length === 0) return alert("فایلی انتخاب نکردی!");
+            if (!dateInput) return alert("تاریخ رو مشخص کن!");
 
             const file = fileInput.files[0];
             const reader = new FileReader();
 
             reader.onload = function(e) {
-                const fileRecord = {
-                    classId: currentClass,
+                const fileData = {
+                    className: currentClass,
                     date: dateInput,
-                    name: file.name,
-                    type: file.type,
-                    dataUrl: e.target.result
+                    fileName: file.name,
+                    fileType: file.type,
+                    data: e.target.result 
                 };
 
-                const transaction = db.transaction(["class_files"], "readwrite");
-                const store = transaction.objectStore("class_files");
-                const request = store.add(fileRecord);
-
-                request.onsuccess = function() {
-                    showToast("فایل با موفقیت در فضای آفلاین ذخیره شد.", "success");
-                    fileInput.value = ""; 
+                const tx = db.transaction(["classFiles"], "readwrite");
+                tx.objectStore("classFiles").add(fileData);
+                tx.oncomplete = function() {
+                    fileInput.value = "";
                     loadFilesFromDB();
                 };
-                request.onerror = function() {
-                    showToast("حجم فایل بیش از حد مجاز مرورگر است یا خطایی رخ داد.", "error");
-                };
             };
-            
             reader.readAsDataURL(file);
         }
 
         function loadFilesFromDB() {
-            if(!db) return;
             const listContainer = document.getElementById('files-list');
-            listContainer.innerHTML = "";
-            
-            const transaction = db.transaction(["class_files"], "readonly");
-            const store = transaction.objectStore("class_files");
-            const index = store.index("classId");
-            const request = index.getAll(currentClass);
+            listContainer.innerHTML = ""; 
+            const filterDate = document.getElementById('filter-date').value;
 
-            request.onsuccess = function(event) {
-                const files = event.target.result;
-                if(files.length === 0) {
-                    listContainer.innerHTML = "<div style='grid-column: 1/-1; text-align:center; padding: 30px; color:var(--text-muted);'><i class='fas fa-box-open fa-2x' style='margin-bottom:10px; display:block;'></i>هنوز هیچ فایلی برای این درس ثبت نشده است.</div>";
-                    return;
-                }
+            const tx = db.transaction(["classFiles"], "readonly");
+            const request = tx.objectStore("classFiles").index("className").getAll(currentClass);
 
-                // سورت کردن فایل‌ها از جدید به قدیم
-                files.sort((a, b) => new Date(b.date) - new Date(a.date));
+            request.onsuccess = function(e) {
+                const files = e.target.result;
+                let hasFiles = false;
 
                 files.forEach(file => {
-                    let icon = "fa-file-alt";
-                    if(file.type.includes("pdf")) icon = "fa-file-pdf";
-                    else if(file.type.includes("image")) icon = "fa-file-image";
-                    else if(file.type.includes("video")) icon = "fa-file-video";
-                    else if(file.type.includes("zip") || file.type.includes("rar")) icon = "fa-file-archive";
+                    if (filterDate && file.date !== filterDate) return;
+                    hasFiles = true;
+
+                    let icon = "fa-file";
+                    if(file.fileType.includes("pdf")) icon = "fa-file-pdf";
+                    else if(file.fileType.includes("image")) icon = "fa-file-image";
 
                     const card = document.createElement('div');
                     card.className = "file-card";
                     card.innerHTML = `
                         <i class="fas ${icon} file-icon"></i>
-                        <div class="file-name" title="${file.name}">${file.name}</div>
-                        <div class="file-date"><i class="fas fa-calendar-day"></i> ${file.date}</div>
+                        <div class="file-name" title="${file.fileName}">${file.fileName}</div>
+                        <div class="file-date">${file.date}</div>
                         <div class="file-actions">
-                            <a href="${file.dataUrl}" download="${file.name}" class="btn-action" title="دانلود"><i class="fas fa-download"></i></a>
-                            <button class="btn-action btn-delete" onclick="deleteFile(${file.id})" title="حذف دائمی"><i class="fas fa-trash"></i></button>
+                            <a href="${file.data}" download="${file.fileName}" class="btn-action"><i class="fas fa-download"></i></a>
+                            <button class="btn-action btn-delete" onclick="deleteFile(${file.id})"><i class="fas fa-trash"></i></button>
                         </div>
                     `;
                     listContainer.appendChild(card);
                 });
+
+                if(!hasFiles) {
+                    listContainer.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:#555;'>فایلی برای این تاریخ بایگانی نشده.</p>";
+                }
             };
         }
 
         function deleteFile(id) {
-            // به جای alert/confirm سنتی از کاستوم استفاده میکنیم ولی برای سادگی اینجا یه تریک می‌زنیم
-            // چون درخواست عدم استفاده از alert داده شده، مستقیما با یک توست پاک می‌کنیم و قابلیت آندو نداره.
-            const transaction = db.transaction(["class_files"], "readwrite");
-            const store = transaction.objectStore("class_files");
-            store.delete(id);
-            
-            transaction.oncomplete = function() {
-                showToast("فایل با موفقیت حذف شد.", "success");
-                loadFilesFromDB();
-            };
-        }
-
-        const canvas = document.getElementById('jungle-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Firefly {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.radius = Math.random() * 2 + 0.5;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.life = Math.random() * 100;
-                this.maxAlpha = Math.random() * 0.8 + 0.2;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life += 1;
-                
-                // Float behavior
-                this.y -= 0.2; // Slowly drift up
-
-                // Wrap around edges
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-            }
-            draw() {
-                const alpha = Math.abs(Math.sin(this.life * 0.05)) * this.maxAlpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(52, 211, 153, ${alpha})`;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#34d399';
-                ctx.fill();
-                ctx.shadowBlur = 0; // Reset for next draw
+            if(confirm("فایل حذف بشه؟")) {
+                const tx = db.transaction(["classFiles"], "readwrite");
+                tx.objectStore("classFiles").delete(id);
+                tx.oncomplete = loadFilesFromDB;
             }
         }
-
-        function initParticles() {
-            particles = [];
-            const numParticles = Math.floor((width * height) / 15000); // Responsive amount
-            for (let i = 0; i < numParticles; i++) {
-                particles.push(new Firefly());
-            }
-        }
-        initParticles();
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw a subtle misty background element
-            const grad = ctx.createRadialGradient(width/2, height, 0, width/2, height, height);
-            grad.addColorStop(0, 'rgba(16, 185, 129, 0.03)');
-            grad.addColorStop(1, 'transparent');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateCanvas);
-        }
-        
-        window.onload = () => {
-            animateCanvas();
-        };
-
     </script>
 </body>
 </html>
